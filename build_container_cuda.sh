@@ -41,6 +41,7 @@ docker run -td --privileged --net=host --ipc=host \
     -v `pwd`/Datasets:/Datasets \
     -v /etc/group:/etc/group:ro \
     -v `pwd`/ORB_SLAM3:/ORB_SLAM3 \
+    --mount type=bind,source="$HOME/mt/large_scale_pgo",target=/large_scale_pgo \
     jahaniam/orbslam3:ubuntu20_noetic_cuda bash
 
 # Git pull orbslam and compile

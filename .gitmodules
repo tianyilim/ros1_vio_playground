@@ -1,0 +1,6 @@
+[submodule "ORB_SLAM3"]
+	path = ORB_SLAM3
+	url = https://github.com/UZ-SLAMLab/ORB_SLAM3.git
+[submodule "orb_slam3_ros_wrapper"]
+	path = orb_slam3_ros_wrapper
+	url = https://github.com/thien94/orb_slam3_ros_wrapper

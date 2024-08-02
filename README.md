@@ -1,5 +1,13 @@
 # ORB_SLAM3 docker
 
+Tianyi modifications:
+- Also mounting MT folder
+- Add Orbslam3 cloning
+- Add ROS git repo
+- Some general stuff for container usability
+
+---
+
 This docker is based on <b>Ros Noetic Ubuntu 20</b>. If you need melodic with ubuntu 18 checkout #8fde91d
 
 There are two versions available:

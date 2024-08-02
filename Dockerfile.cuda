@@ -2,8 +2,11 @@ FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
 
 RUN apt-get update
 
+# Some basic utilities
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -y gnupg2 curl lsb-core vim wget python3-pip libpng16-16 libjpeg-turbo8 libtiff5
+RUN apt-get install -y \
+    gnupg2 curl lsb-core vim wget python3-pip libpng16-16 libjpeg-turbo8 libtiff5 \
+    tmux ranger magic htop build-essential git
 
 
 # Installing ROS-noetic
@@ -67,7 +70,7 @@ RUN cd /tmp && git clone https://github.com/opencv/opencv.git && \
     make -j$nproc && make install && \
     cd / && rm -rf /tmp/opencv
 
-# # Build Pangolin
+# Build Pangolin
 RUN cd /tmp && git clone https://github.com/stevenlovegrove/Pangolin && \
     cd Pangolin && git checkout v0.6 && mkdir build && cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-std=c++11 .. && \
@@ -79,11 +82,23 @@ RUN chmod +x  /ros_entrypoint.sh
 ENV ROS_DISTRO noetic
 ENV LANG en_US.UTF-8
 
-ENTRYPOINT ["/ros_entrypoint.sh"]
+# Setup catkin ws
+RUN mkdir -p /catkin_ws/src /catkin_ws/build /catkin_ws/devel /catkin_ws/install /ORB_SLAM3
+
+# Build ORB_SLAM3
+WORKDIR /ORB_SLAM3
+RUN bash build.sh
+
+# build catkin_ws
+WORKDIR /catkin_ws
+RUN catkin build
+
+# TUI helpers
+COPY docker_build_utils/.tmux.conf /root/.tmux.conf
+COPY docker_build_utils/.vimrc /root/.vimrc
 
 USER $USERNAME
 # terminal colors with xterm
 ENV TERM xterm
-RUN mkdir /ORB_SLAM3
-WORKDIR /ORB_SLAM3
+WORKDIR /
 CMD ["bash"]

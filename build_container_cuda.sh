@@ -34,13 +34,13 @@ docker run -td --privileged --net=host --ipc=host \
     --gpus=all \
     -e "DISPLAY=$DISPLAY" \
     -e "QT_X11_NO_MITSHM=1" \
-    -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     -e "XAUTHORITY=$XAUTH" \
     -e ROS_IP=127.0.0.1 \
     --cap-add=SYS_PTRACE \
     -v `pwd`/Datasets:/Datasets \
     -v /etc/group:/etc/group:ro \
     -v `pwd`/ORB_SLAM3:/ORB_SLAM3 \
+    -v $XSOCK:$XSOCK \
     --mount type=bind,source="$HOME/mt/large_scale_pgo",target=/large_scale_pgo \
     jahaniam/orbslam3:ubuntu20_noetic_cuda bash
 

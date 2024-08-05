@@ -24,4 +24,4 @@ This should attach you into an interactive `bash` terminal where you can do stuf
 
 `tmux` is installed, but the leader is `C-a` to avoid conflicts with nested `tmux` sesisons.
 
-Code modifications can be done in the `code` folder. This is to ensure the submodules themselves are not modified.
+Code modifications can be done in the `code` folder.

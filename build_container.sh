@@ -1,17 +1,6 @@
 #!/bin/bash
 set -e
 
-# Ensure that ORB_SLAM3 dirs are empty
-rm -rf ORB_SLAM3 orb_slam3_ros_wrapper
-
-# Ensure that ORB_SLAM3 is checked out
-git submodule update --init --recursive 
-cd ORB_SLAM3/Vocabulary && tar -xvf ORBvoc.txt.tar.gz && cd - || exit 1 # Extract vocabulary
-# Modify the catkin workspace to the specific location of the orbslam3 wrapper
-sed -i 's/$ENV{HOME}\/Packages//' orb_slam3_ros_wrapper/CMakeLists.txt
-# Copy vocabulary over
-cp ORB_SLAM3/Vocabulary/ORBvoc.txt orb_slam3_ros_wrapper/config/ORBvoc.txt
-
 # UI permisions
 XSOCK=/tmp/.X11-unix
 XAUTH=/tmp/.docker.xauth

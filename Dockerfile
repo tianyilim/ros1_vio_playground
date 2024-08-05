@@ -64,13 +64,13 @@ ENV LANG en_US.UTF-8
 # Setup catkin ws
 RUN mkdir -p /catkin_ws/src /catkin_ws/build /catkin_ws/devel /catkin_ws/install /ORB_SLAM3
 
-# TUI helpers
-COPY docker_build_utils/.bashrc ~root/.bashrc
-COPY docker_build_utils/.tmux.conf ~root/.tmux.conf
-COPY docker_build_utils/.vimrc ~root/.vimrc
+# TUI helpers and config files
+COPY docker_build_utils/bashrc /root/.bashrc
+COPY docker_build_utils/tmux.conf /root/.tmux.conf
+COPY docker_build_utils/vimrc /root/.vimrc
 
 USER $USERNAME
 # terminal colors with xterm
-ENV TERM xterm-color256
+ENV TERM xterm-256color
 WORKDIR /
 CMD ["bash"]

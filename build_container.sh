@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 # checking if you have nvidia
 if ! nvidia-smi | grep "Driver" 2>/dev/null; then
   echo "******************************"
@@ -13,6 +16,9 @@ if ! nvidia-smi | grep "Driver" 2>/dev/null; then
   done
 fi
 
+# Ensure that ORB_SLAM3 dirs are empty
+rm -rf ORB_SLAM3 orb_slam3_ros_wrapper
+
 # Ensure that ORB_SLAM3 is checked out
 git submodule update --init --recursive # should clone from latest orbslam3
 cd ORB_SLAM3/Vocabulary && tar -xvf ORBvoc.txt.tar.gz && cd - || exit 1 # Extract vocabulary
@@ -26,24 +32,17 @@ XSOCK=/tmp/.X11-unix
 XAUTH=/tmp/.docker.xauth
 touch $XAUTH
 xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
-
 xhost +local:docker
-# docker pull jahaniam/orbslam3:ubuntu20_noetic_cuda
 
 # Remove existing container
 docker rm -f orbslam3 &>/dev/null
-[ -d "ORB_SLAM3" ] && sudo rm -rf ORB_SLAM3 && mkdir ORB_SLAM3
 
-# Copy some stuff to the docker build context
-mkdir docker_build_utils
-cp ~/.bashrc docker_build_utils/
-cp ~/.tmux.conf docker_build_utils/
-cp ~/.vimrc docker_build_utils/
+# Docker build
+docker buildx build -t orbslam3:ubuntu20_noetic_cuda -f Dockerfile .
 
-docker buildx build -t orbslam3 -f Dockerfile.cuda .
-
-# Create a new container
-docker run -td --privileged --net=host --ipc=host \
+# Create a new container. It attaches to the current terminal and should compile.
+docker run --interactive --tty \
+    --privileged --net=host --ipc=host \
     --name="orbslam3" \
     --gpus=all \
     -e "DISPLAY=$DISPLAY" \
@@ -52,12 +51,9 @@ docker run -td --privileged --net=host --ipc=host \
     -e ROS_IP=127.0.0.1 \
     --cap-add=SYS_PTRACE \
     -v $XSOCK:$XSOCK \
-    -v `pwd`/Datasets:/Datasets \
     -v /etc/group:/etc/group:ro \
-    -v `pwd`/ORB_SLAM3:/ORB_SLAM3 \
+    --mount type=bind,source="$(pwd)/Datasets",target=/Datasets \
+    --mount type=bind,source="$(pwd)/ORB_SLAM3",target=/ORB_SLAM3 \
     --mount type=bind,source="$HOME/mt/large_scale_pgo",target=/large_scale_pgo \
-    --mount type=bind,source="`pwd`/orb_slam3_ros_wrapper",target=/catkin_ws/src/orb_slam3_ros_wrapper \
-    jahaniam/orbslam3:ubuntu20_noetic_cuda bash
-
-# Git pull orbslam and compile
-# docker exec -it orbslam3 bash -i -c  "git clone -b add_euroc_example.sh https://github.com/jahaniam/ORB_SLAM3.git /ORB_SLAM3 && cd /ORB_SLAM3 && chmod +x build.sh && ./build.sh "
+    --mount type=bind,source="$(pwd)/orb_slam3_ros_wrapper",target=/catkin_ws/src/orb_slam3_ros_wrapper \
+    orbslam3:ubuntu20_noetic_cuda

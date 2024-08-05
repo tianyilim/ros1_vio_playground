@@ -1,4 +1,4 @@
-FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
+FROM ros:noetic-ros-
 
 RUN apt-get update
 
@@ -8,28 +8,7 @@ RUN apt-get install -y \
     gnupg2 curl lsb-core vim wget python3-pip libpng16-16 libjpeg-turbo8 libtiff5 \
     tmux ranger magic htop build-essential git
 
-
-# Installing ROS-noetic
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-
-RUN apt update
-RUN apt install -y ros-noetic-desktop
-RUN apt-get install -y python3-rosdep
-RUN rosdep init
-RUN rosdep update
-RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
-RUN apt install -y python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
-
-# Intalling python-catkin
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'
-RUN wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
-RUN apt-get update
-RUN apt-get install -y python3-catkin-tools
-RUN apt-get install -y software-properties-common
-
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bash_profile
-
 
 RUN apt-get install -y \
         # Base tools
@@ -39,6 +18,10 @@ RUN apt-get install -y \
         unzip \
         pkg-config \
         python3-dev \
+        # ROS dependencies
+        python3-catkin-tools python3-osrf-pycommon \
+        ros-noetic-cv-bridge ros-noetic-image-transport ros-noetic-tf \
+        ros-noetic-rqt ros-noetic-rqt-common-plugins ros-noetic-rviz \
         # OpenCV dependencies
         python3-numpy \
         # Pangolin dependencies
@@ -50,14 +33,7 @@ RUN apt-get install -y \
         ca-certificates\
         software-properties-common
 
-RUN curl -fsSL https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-RUN add-apt-repository "deb https://download.sublimetext.com/ apt/stable/"
-RUN apt update
-RUN apt install -y sublime-text
-
-# Build OpenCV (3.0 or higher should be fine)
-RUN apt-get install -y python3-dev python3-numpy 
-RUN apt-get install -y python-dev python-numpy
+# Build OpenCV
 RUN apt-get install -y libavcodec-dev libavformat-dev libswscale-dev
 RUN apt-get install -y libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
 RUN apt-get install -y libgtk-3-dev
@@ -77,28 +53,25 @@ RUN cd /tmp && git clone https://github.com/stevenlovegrove/Pangolin && \
     make -j$nproc && make install && \
     cd / && rm -rf /tmp/Pangolin
 
-COPY ros_entrypoint.sh /ros_entrypoint.sh
-RUN chmod +x  /ros_entrypoint.sh
+# Setup ros entrypoint and post create command that compiles everything
+COPY docker_build_utils/ros_entrypoint.sh /ros_entrypoint.sh
+COPY docker_build_utils/post_create_command.sh /post_create_command.sh
+RUN chmod +x /ros_entrypoint.sh
+RUN chmod +x /post_create_command.sh
 ENV ROS_DISTRO noetic
 ENV LANG en_US.UTF-8
 
 # Setup catkin ws
 RUN mkdir -p /catkin_ws/src /catkin_ws/build /catkin_ws/devel /catkin_ws/install /ORB_SLAM3
 
-# Build ORB_SLAM3
-WORKDIR /ORB_SLAM3
-RUN bash build.sh
-
-# build catkin_ws
-WORKDIR /catkin_ws
-RUN catkin build
-
 # TUI helpers
-COPY docker_build_utils/.tmux.conf /root/.tmux.conf
-COPY docker_build_utils/.vimrc /root/.vimrc
+COPY docker_build_utils/.bashrc ~root/.bashrc
+COPY docker_build_utils/.tmux.conf ~/root/.tmux.conf
+COPY docker_build_utils/.vimrc ~root/.vimrc
 
 USER $USERNAME
 # terminal colors with xterm
-ENV TERM xterm
+ENV TERM xterm-color
 WORKDIR /
+# CMD "/bin/bash post_create_command.sh && bash"
 CMD ["bash"]

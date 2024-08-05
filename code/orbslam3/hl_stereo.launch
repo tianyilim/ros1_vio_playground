@@ -1,8 +1,8 @@
 <launch>
     <arg name="left_cam_topic" value="/hetlf/image_rect" />
     <arg name="right_cam_topic" value="/hetrf/image_rect" />
-    <arg name="settings_filepath" value="hololens.yaml" />
-    <arg name="rviz_filepath" value="hololens_viz.rviz" />
+    <arg name="settings_filepath" value="$(dirname)/hololens.yaml" />
+    <arg name="rviz_filepath" value="$(dirname)/hololens_viz.rviz" />
 
     <node name="orb_slam3_hololens_stereo" pkg="orb_slam3_ros_wrapper"
         type="orb_slam3_ros_wrapper_stereo" output="screen">

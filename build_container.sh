@@ -1,27 +1,11 @@
 #!/bin/bash
 set -e
 
-# checking if you have nvidia
-# TODO check if this is still needed.
-if ! nvidia-smi | grep "Driver" 2>/dev/null; then
-  echo "******************************"
-  echo """It looks like you don't have nvidia drivers running. Consider running build_container_cpu.sh instead."""
-  echo "******************************"
-  while true; do
-    read -p "Do you still wish to continue?" yn
-    case $yn in
-      [Yy]* ) make install; break;;
-      [Nn]* ) exit;;
-      * ) echo "Please answer yes or no.";;
-    esac
-  done
-fi
-
 # Ensure that ORB_SLAM3 dirs are empty
 rm -rf ORB_SLAM3 orb_slam3_ros_wrapper
 
 # Ensure that ORB_SLAM3 is checked out
-git submodule update --init --recursive # should clone from latest orbslam3
+git submodule update --init --recursive 
 cd ORB_SLAM3/Vocabulary && tar -xvf ORBvoc.txt.tar.gz && cd - || exit 1 # Extract vocabulary
 # Modify the catkin workspace to the specific location of the orbslam3 wrapper
 sed -i 's/$ENV{HOME}\/Packages//' orb_slam3_ros_wrapper/CMakeLists.txt
@@ -55,6 +39,10 @@ docker run --interactive --tty \
     -v /etc/group:/etc/group:ro \
     --mount type=bind,source="$(pwd)/Datasets",target=/Datasets \
     --mount type=bind,source="$(pwd)/ORB_SLAM3",target=/ORB_SLAM3 \
-    --mount type=bind,source="$HOME/mt/large_scale_pgo",target=/large_scale_pgo \
     --mount type=bind,source="$(pwd)/orb_slam3_ros_wrapper",target=/catkin_ws/src/orb_slam3_ros_wrapper \
+    --mount type=bind,source="$(pwd)/code",target=/code \
+    --mount type=bind,source="$(pwd)/user",target=/user \
+    --mount type=bind,source="$HOME/mt/large_scale_pgo",target=/code/large_scale_pgo \
     orbslam3:ubuntu20_noetic_cuda
+
+# TODO-neat way to mount custom dataset folder?

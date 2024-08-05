@@ -71,7 +71,6 @@ COPY docker_build_utils/.vimrc ~root/.vimrc
 
 USER $USERNAME
 # terminal colors with xterm
-ENV TERM xterm-color
+ENV TERM xterm-color256
 WORKDIR /
-# CMD "/bin/bash post_create_command.sh && bash"
 CMD ["bash"]

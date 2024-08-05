@@ -2,6 +2,7 @@
 set -e
 
 # checking if you have nvidia
+# TODO check if this is still needed.
 if ! nvidia-smi | grep "Driver" 2>/dev/null; then
   echo "******************************"
   echo """It looks like you don't have nvidia drivers running. Consider running build_container_cpu.sh instead."""

@@ -21,6 +21,7 @@ RUN apt-get install -y \
         # ROS dependencies
         python3-catkin-tools python3-osrf-pycommon \
         ros-noetic-cv-bridge ros-noetic-image-transport ros-noetic-tf \
+        ros-noetic-hector-trajectory-server \
         # OpenCV dependencies
         python3-numpy \
         # Pangolin dependencies

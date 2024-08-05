@@ -65,7 +65,7 @@ RUN mkdir -p /catkin_ws/src /catkin_ws/build /catkin_ws/devel /catkin_ws/install
 
 # TUI helpers
 COPY docker_build_utils/.bashrc ~root/.bashrc
-COPY docker_build_utils/.tmux.conf ~/root/.tmux.conf
+COPY docker_build_utils/.tmux.conf ~root/.tmux.conf
 COPY docker_build_utils/.vimrc ~root/.vimrc
 
 USER $USERNAME

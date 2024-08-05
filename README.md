@@ -1,6 +1,8 @@
 # ORB_SLAM3 docker
 
-This docker is based on Ros Noetic Ubuntu 20. It's based off the OSRF ROS Noetic Desktop image. For now some link paths are hardcoded to Tianyi's MT thesis folder. Check [the build script](./build_container.sh) for details.
+This docker is based on Ros Noetic Ubuntu 20. It's based off the OSRF ROS Noetic Desktop image.
+
+> **NOTE:** As symlinks are not supported in Docker, it's difficult to mount datasets outside the `Datasets` folder. As a stopgap, Tianyi mounted an absolute path on his local machine [in the build file](./build_container.sh). Modifiy it before building!
 
 ## Quickstart:
 
@@ -22,33 +24,4 @@ This should attach you into an interactive `bash` terminal where you can do stuf
 
 `tmux` is installed, but the leader is `C-a` to avoid conflicts with nested `tmux` sesisons.
 
-## Legacy from fork
-
-## Compilation and Running
-
-Steps to compile the Orbslam3 on the sample dataset:
-
-- `./download_dataset_sample.sh`
-- `build_container_cpu.sh` or `build_container_cuda.sh` depending on your machine.
-
-Now you should see ORB_SLAM3 is compiling.
-
-- Download A sample MH02 EuRoC example and put it in the `Datasets/EuRoC/MH02` folder
-
-```
-mkdir -p Datasets/EuRoC
-wget -O Datasets/EuRoC/MH_02_easy.zip http://robotics.ethz.ch/~asl-datasets/ijrr_euroc_mav_dataset/machine_hall/MH_02_easy/MH_02_easy.zip
-unzip Datasets/EuRoC/MH_02_easy.zip -d Datasets/EuRoC/MH02
-```
-
-To run a test example:
-
-- `docker exec -it orbslam3 bash`
-- `cd /ORB_SLAM3/Examples && bash ./euroc_examples.sh`
-  It will take few minutes to initialize. Pleasde Be patient.
-
----
-
-You can use vscode remote development.
-
-- `docker exec -it orbslam3 bash`
+Code modifications can be done in the `code` folder. This is to ensure the submodules themselves are not modified.

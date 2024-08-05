@@ -8,20 +8,4 @@ set -e
 source "/opt/ros/noetic/setup.bash"
 catkin list
 
-# Build ORB_SLAM3
-echo "Building ORB_SLAM3"
-cd /ORB_SLAM3 && ./build.sh
-
-# Ensure that ros dependencies are all installed
-rm -rf /etc/ros/rosdep/sources.list.d/20-default.list && \
-sudo rosdep init && \
-rosdep update && \
-rosdep install --from-paths /catkin_ws/src --ignore-src -r -y
-
-# Build catkin_ws
-echo "Building catkin_ws"
-cd /catkin_ws && catkin build
-# Add orbslam3 source to bashrc
-echo "source /catkin_ws/devel/setup.bash" >> ~/.bashrc
-
-echo "Finished."
+echo "Post-create command finished."

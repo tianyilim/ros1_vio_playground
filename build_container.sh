@@ -38,8 +38,6 @@ docker run --interactive --tty \
     -v $XSOCK:$XSOCK \
     -v /etc/group:/etc/group:ro \
     --mount type=bind,source="$(pwd)/Datasets",target=/Datasets \
-    --mount type=bind,source="$(pwd)/ORB_SLAM3",target=/ORB_SLAM3 \
-    --mount type=bind,source="$(pwd)/orb_slam3_ros_wrapper",target=/catkin_ws/src/orb_slam3_ros_wrapper \
     --mount type=bind,source="$(pwd)/code",target=/code \
     --mount type=bind,source="$(pwd)/user",target=/user \
     --mount type=bind,source="$HOME/mt/large_scale_pgo",target=/code/large_scale_pgo \

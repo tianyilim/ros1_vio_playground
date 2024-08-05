@@ -1,4 +1,4 @@
-FROM ros:noetic-ros-
+FROM osrf/ros:noetic-desktop-full
 
 RUN apt-get update
 
@@ -21,7 +21,6 @@ RUN apt-get install -y \
         # ROS dependencies
         python3-catkin-tools python3-osrf-pycommon \
         ros-noetic-cv-bridge ros-noetic-image-transport ros-noetic-tf \
-        ros-noetic-rqt ros-noetic-rqt-common-plugins ros-noetic-rviz \
         # OpenCV dependencies
         python3-numpy \
         # Pangolin dependencies

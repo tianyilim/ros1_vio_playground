@@ -1,0 +1,22 @@
+<package>
+    <name>hl_orbslam3_wrapper</name>
+    <version>0.0.0</version>
+    <description>ROS package for evaluating ORB-SLAM3 on Hololens data.</description>
+
+    <maintainer email="0.tianyi.lim@gmail.com">Tianyi Lim</maintainer>
+
+    <license>GPLv3</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <build_depend>rospy</build_depend>
+    <build_depend>std_msgs</build_depend>
+    <build_depend>sensor_msgs</build_depend>
+    <build_depend>message_filters</build_depend>
+
+    <run_depend>rospy</run_depend>
+    <run_depend>std_msgs</run_depend>
+    <run_depend>sensor_msgs</run_depend>
+    <run_depend>message_filters</run_depend>
+
+    <export></export>
+</package>

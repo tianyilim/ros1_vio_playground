@@ -2,6 +2,8 @@
     <arg name="left_cam_topic" value="/hetlf/image_rect" />
     <arg name="right_cam_topic" value="/hetrf/image_rect" />
     <arg name="imu_topic" value="/imu" />
+    <arg name="imu_accel_topic" value="$(arg imu_topic)/accel" />
+    <arg name="imu_gyro_topic" value="$(arg imu_topic)/gyro" />
 
     <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/hololens.yaml" />
     <arg name="rviz_filepath" value="$(find hl_orbslam3_wrapper)/viz/hololens_viz.rviz" />
@@ -27,6 +29,11 @@
         <param name="world_pitch" type="double" value="1.57079632679" />
         <param name="world_yaw" type="double" value="0.0" />
     </node>
+
+    <node name="imu_downsampling_node" pkg="hl_orbslam3_wrapper" type="imu_downsampling_node.py"
+        output="screen"
+        args="--imu_pub_topic $(arg imu_topic) --accel_sub_topic $(arg imu_accel_topic) --gyro_sub_topic $(arg imu_gyro_topic)"
+    />
 
     <!-- Visualization - RViz. -->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_filepath)" output="screen" />

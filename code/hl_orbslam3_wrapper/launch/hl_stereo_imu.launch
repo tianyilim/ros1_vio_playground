@@ -3,8 +3,8 @@
     <arg name="right_cam_topic" value="/hetrf/image_rect" />
     <arg name="imu_topic" value="/imu" />
 
-    <arg name="settings_filepath" value="$(dirname)/hololens.yaml" />
-    <arg name="rviz_filepath" value="$(dirname)/hololens_viz.rviz" />
+    <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/hololens.yaml" />
+    <arg name="rviz_filepath" value="$(find hl_orbslam3_wrapper)/viz/hololens_viz.rviz" />
 
     <node name="orb_slam3_hololens_stereo_imu" pkg="orb_slam3_ros_wrapper"
         type="orb_slam3_ros_wrapper_stereo_inertial" output="screen">

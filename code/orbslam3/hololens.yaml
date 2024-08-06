@@ -78,7 +78,7 @@ IMU.NoiseGyro: 0.0007370161086631318 # Uncertainty: 2.366816964638474e-08
 IMU.NoiseAcc: 0.003711313164482514   # Uncertainty: 3.6575469266608707e-06
 IMU.GyroWalk: 1.413e-2 # these are approximate
 IMU.AccWalk: 1.2589e-2 # these are approximate
-IMU.Frequency: 200.0   # can be set higher
+IMU.Frequency: 100.0
 
 #--------------------------------------------------------------------------------------------
 # ORB Parameters

@@ -26,31 +26,35 @@ class ImuDownsamplingNode:
         self.imu_pub = rospy.Publisher(imu_pub_topic, Imu, queue_size=10)
         self.timer = rospy.Timer(rospy.Duration(1.0/rate), self.timer_callback)
 
-        self.message_filter_subs = [message_filters.Subscriber(accel_sub_topic, Imu, queue_size=10_000, tcp_nodelay=True),
-                                    message_filters.Subscriber(gyro_sub_topic, Imu, queue_size=10_000, tcp_nodelay=True)]
+        q_size = 100
+        tcp_nodelay = False
+        self.message_filter_subs = [message_filters.Subscriber(accel_sub_topic, Imu, queue_size=q_size, tcp_nodelay=tcp_nodelay),
+                                    message_filters.Subscriber(gyro_sub_topic, Imu, queue_size=q_size, tcp_nodelay=tcp_nodelay)]
         self.time_sync = message_filters.ApproximateTimeSynchronizer(
             self.message_filter_subs,
-            10_000,  # queue size
-            0.1  # slop between messages
+            q_size,  # queue size
+            0.1      # slop between messages
         )
         self.time_sync.registerCallback(self.accel_gyro_callback)
 
         self.imu_msg_lock = Lock()
-        self.imu_msg_queue = deque(maxlen=10)
+        self.last_imu_msg: Optional[Imu] = None
 
     def timer_callback(self, event) -> None:
-        if len(self.imu_msg_queue) == 0:
+        if self.last_imu_msg is None:
             rospy.logwarn_throttle(
-                1.0, "No IMU messages in queue. Skipping publish.")
+                1.0, "No new IMU messages. Skipping publish.")
             return
 
         # Read the last imu message
-        with self.imu_msg_lock:
-            last_imu_msg = self.imu_msg_queue.popleft()
+        with self.imu_msg_lock:   
+            last_imu_msg = self.last_imu_msg
+            self.last_imu_msg = None
 
         self.imu_pub.publish(last_imu_msg)
 
     def accel_gyro_callback(self, accel_msg: Imu, gyro_msg: Imu) -> None:
+        # rospy.loginfo_throttle(0.1, "Received Accel and Gyro messages")
         imu_msg = Imu()
         # Take the latest timestamp
         imu_msg.header.stamp = accel_msg.header.stamp if accel_msg.header.stamp > gyro_msg.header.stamp else gyro_msg.header.stamp
@@ -63,12 +67,12 @@ class ImuDownsamplingNode:
         imu_msg.linear_acceleration_covariance = accel_msg.linear_acceleration_covariance
 
         with self.imu_msg_lock:
-            self.imu_msg_queue.append(imu_msg)
+            self.last_imu_msg = imu_msg
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--rate", type=float, default=200.0,
+    parser.add_argument("--rate", type=float, default=100.0,
                         help="Rate at which to publish the IMU messages")
     parser.add_argument("--imu_pub_topic", type=str, default="/imu",
                         help="Topic to publish combined IMU messages")

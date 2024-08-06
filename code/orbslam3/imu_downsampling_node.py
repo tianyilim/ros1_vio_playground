@@ -60,11 +60,17 @@ class ImuDownsamplingNode:
         imu_msg.header.stamp = accel_msg.header.stamp if accel_msg.header.stamp > gyro_msg.header.stamp else gyro_msg.header.stamp
         imu_msg.header.frame_id = 'imu'
 
+        imu_msg.orientation_covariance = [-1] * 9
+
         imu_msg.angular_velocity = gyro_msg.angular_velocity
         imu_msg.angular_velocity_covariance = gyro_msg.angular_velocity_covariance
 
         imu_msg.linear_acceleration = accel_msg.linear_acceleration
         imu_msg.linear_acceleration_covariance = accel_msg.linear_acceleration_covariance
+
+        assert imu_msg.angular_velocity_covariance[0] != -1
+        assert imu_msg.linear_acceleration_covariance[0] != -1
+        assert imu_msg.orientation_covariance[0] == -1
 
         with self.imu_msg_lock:
             self.last_imu_msg = imu_msg

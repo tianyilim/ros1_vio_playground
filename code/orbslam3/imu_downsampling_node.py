@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 Simple ROS node that subscribes to two separate IMU topics, one for Accel and one for Gyro, fuses them, and republishes
 at a lower rate.
@@ -54,11 +56,12 @@ class ImuDownsamplingNode:
         self.imu_pub.publish(last_imu_msg)
 
     def accel_gyro_callback(self, accel_msg: Imu, gyro_msg: Imu) -> None:
-        # rospy.loginfo_throttle(0.1, "Received Accel and Gyro messages")
         imu_msg = Imu()
         # Take the latest timestamp
         imu_msg.header.stamp = accel_msg.header.stamp if accel_msg.header.stamp > gyro_msg.header.stamp else gyro_msg.header.stamp
         imu_msg.header.frame_id = 'imu'
+
+        rospy.loginfo_throttle(0.1, f"Received Accel and Gyro messages. Gap: {abs(accel_msg.header.stamp.to_sec() - gyro_msg.header.stamp.to_sec()) * 1000:0.2f} ms")
 
         imu_msg.orientation_covariance = [-1] * 9
 

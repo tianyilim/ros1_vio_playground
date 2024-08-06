@@ -12,6 +12,7 @@ from sensor_msgs.msg import Imu
 import message_filters
 from typing import Optional
 from threading import Lock
+from collections import deque
 
 
 class ImuDownsamplingNode:
@@ -25,27 +26,27 @@ class ImuDownsamplingNode:
         self.imu_pub = rospy.Publisher(imu_pub_topic, Imu, queue_size=10)
         self.timer = rospy.Timer(rospy.Duration(1.0/rate), self.timer_callback)
 
-        self.message_filter_subs = [message_filters.Subscriber(accel_sub_topic, Imu, queue_size=1000, tcp_nodelay=True),
-                                    message_filters.Subscriber(gyro_sub_topic, Imu, queue_size=1000, tcp_nodelay=True)]
+        self.message_filter_subs = [message_filters.Subscriber(accel_sub_topic, Imu, queue_size=10_000, tcp_nodelay=True),
+                                    message_filters.Subscriber(gyro_sub_topic, Imu, queue_size=10_000, tcp_nodelay=True)]
         self.time_sync = message_filters.ApproximateTimeSynchronizer(
             self.message_filter_subs,
-            100,  # queue size
-            0.2  # slop
+            10_000,  # queue size
+            0.1  # slop between messages
         )
         self.time_sync.registerCallback(self.accel_gyro_callback)
 
         self.imu_msg_lock = Lock()
-        self.last_imu_msg: Optional[Imu] = None
+        self.imu_msg_queue = deque(maxlen=10)
 
     def timer_callback(self, event) -> None:
-        if self.last_imu_msg is None:
-            rospy.logwarn_throttle(1.0, "No IMU message received yet. Skipping publish.")
+        if len(self.imu_msg_queue) == 0:
+            rospy.logwarn_throttle(
+                1.0, "No IMU messages in queue. Skipping publish.")
             return
-        rospy.logwarn_once("IMU messages received, publishing!")
 
         # Read the last imu message
         with self.imu_msg_lock:
-            last_imu_msg = self.last_imu_msg
+            last_imu_msg = self.imu_msg_queue.popleft()
 
         self.imu_pub.publish(last_imu_msg)
 
@@ -62,7 +63,7 @@ class ImuDownsamplingNode:
         imu_msg.linear_acceleration_covariance = accel_msg.linear_acceleration_covariance
 
         with self.imu_msg_lock:
-            self.last_imu_msg = imu_msg
+            self.imu_msg_queue.append(imu_msg)
 
 
 if __name__ == '__main__':

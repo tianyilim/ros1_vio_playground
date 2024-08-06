@@ -8,8 +8,6 @@ RUN apt-get install -y \
     gnupg2 curl lsb-core vim wget python3-pip libpng16-16 libjpeg-turbo8 libtiff5 \
     tmux ranger magic htop build-essential git
 
-RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bash_profile
-
 RUN apt-get install -y \
         # Base tools
         cmake \
@@ -94,6 +92,8 @@ RUN . /opt/ros/noetic/setup.sh && catkin build
 COPY docker_build_utils/bashrc /root/.bashrc
 COPY docker_build_utils/tmux.conf /root/.tmux.conf
 COPY docker_build_utils/vimrc /root/.vimrc
+COPY docker_build_utils/bash_profile_ext /tmp/bash_profile_ext
+RUN cat /tmp/bash_profile_ext >> /root/.bash_profile && rm /tmp/bash_profile_ext
 
 # Add orbslam3 source to the bashrc
 RUN echo "source /catkin_ws/devel/setup.bash" >> /root/.bashrc

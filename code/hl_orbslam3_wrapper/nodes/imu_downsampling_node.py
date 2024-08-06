@@ -89,7 +89,7 @@ if __name__ == '__main__':
                         help="Topic to subscribe to Accel messages")
     parser.add_argument("--gyro_sub_topic", type=str, default="/imu/gyro",
                         help="Topic to subscribe to Gyro messages")
-    args = parser.parse_args()
+    args, unknown = parser.parse_known_args()   # bypass rospy args
 
     rospy.init_node('imu_downsampling_node')
     node = ImuDownsamplingNode(

@@ -21,7 +21,7 @@ docker run --interactive --tty \
     -v $XSOCK:$XSOCK \
     -v /etc/group:/etc/group:ro \
     --mount type=bind,source="$(pwd)/Datasets",target=/Datasets \
-    --mount type=bind,source="$(pwd)/code",target=/catkin_ws/src \
+    --mount type=bind,source="$(pwd)/code",target=/catkin_ws/src/code \
     --mount type=bind,source="$(pwd)/user",target=/user \
     --mount type=bind,source="$HOME/mt/large_scale_pgo",target=/Datasets/large_scale_pgo \
     orbslam3:ubuntu20_noetic_cuda

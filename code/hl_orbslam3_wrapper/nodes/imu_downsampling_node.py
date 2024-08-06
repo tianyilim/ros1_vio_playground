@@ -6,6 +6,10 @@ at a lower rate.
 
 Usage:
     python3 run imu_downsampling_node.py --rate 200.0 --imu_pub_topic /imu --accel_sub_topic /imu/accel --gyro_sub_topic /imu/gyro
+
+TODO: Message filters does not work. Perhaps due to the high freq of incoming msgs, or something else, the output
+freqeuncy of the Imu messages is not stable. Therefore, this causes ORB-SLAM3 to segfault!
+--> Need to implement some sort of preintegration after all...
 """
 
 import argparse
@@ -68,7 +72,12 @@ class ImuDownsamplingNode:
         imu_msg.angular_velocity = gyro_msg.angular_velocity
         imu_msg.angular_velocity_covariance = gyro_msg.angular_velocity_covariance
 
-        imu_msg.linear_acceleration = accel_msg.linear_acceleration
+        # TODO this is a hack, specific to HL due to the orientation of the accel and gyro components
+        # (and it doesn't really work... look at Teams chat)
+        # imu_msg.linear_acceleration = accel_msg.linear_acceleration
+        imu_msg.linear_acceleration.x = +accel_msg.linear_acceleration.x
+        imu_msg.linear_acceleration.y = +accel_msg.linear_acceleration.y
+        imu_msg.linear_acceleration.z = +accel_msg.linear_acceleration.z
         imu_msg.linear_acceleration_covariance = accel_msg.linear_acceleration_covariance
 
         assert imu_msg.angular_velocity_covariance[0] != -1

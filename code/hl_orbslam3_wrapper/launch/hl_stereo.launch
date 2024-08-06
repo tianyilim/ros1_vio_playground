@@ -1,3 +1,5 @@
+<!-- FIXME the filepaths are now wrong! -->
+
 <launch>
     <arg name="left_cam_topic" value="/hetlf/image_rect" />
     <arg name="right_cam_topic" value="/hetrf/image_rect" />

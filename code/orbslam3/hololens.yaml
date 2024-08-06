@@ -52,6 +52,7 @@ Camera.RGB: 1 # HL images are grayscale it doesn't matter
 
 # Close/Far threshold. Baseline times.
 Stereo.ThDepth: 60.0
+# Transformation from hetrf to hetlf
 Stereo.T_c1_c2: !!opencv-matrix
   rows: 4
   cols: 4
@@ -60,7 +61,9 @@ Stereo.T_c1_c2: !!opencv-matrix
          0.04020379,  0.99879937,  0.02799052,  0.00200294,
         -0.03945358, -0.02640447,  0.99887247, -0.00266147,
          0.        ,  0.        ,  0.        ,  1.]
+
 # Transformation from camera 0 to body-frame (imu)
+# From hetlf to accel_sensor
 IMU.T_b_c1: !!opencv-matrix
   rows: 4
   cols: 4
@@ -68,14 +71,14 @@ IMU.T_b_c1: !!opencv-matrix
   data: [-0.07738228, -0.99089977, -0.11013456,  0.01994124,
          -0.22364679, -0.09039853,  0.97046907,  0.05092997,
          -0.97159358,  0.09972835, -0.21461631,  0.11169237,
-          0.        ,  0.        ,  0.        ,  1.        ]
+          0.        ,  0.        ,  0.        ,  1.]
 
-# IMU noise --> Not in sensors.ymls
-IMU.NoiseGyro: 1.7e-04 # 1.6968e-04
-IMU.NoiseAcc: 2.0e-03 # 2.0000e-3
-IMU.GyroWalk: 1.9393e-05
-IMU.AccWalk: 3.e-03 # 3.0000e-3
-IMU.Frequency: 200.0
+# IMU noise: Obtained from Mihai
+IMU.NoiseGyro: 0.0007370161086631318 # Uncertainty: 2.366816964638474e-08
+IMU.NoiseAcc: 0.003711313164482514   # Uncertainty: 3.6575469266608707e-06
+IMU.GyroWalk: 1.413e-2 # these are approximate
+IMU.AccWalk: 1.2589e-2 # these are approximate
+IMU.Frequency: 200.0   # can be set higher
 
 #--------------------------------------------------------------------------------------------
 # ORB Parameters

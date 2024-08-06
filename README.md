@@ -12,9 +12,17 @@ This docker is based on Ros Noetic Ubuntu 20. It's based off the OSRF ROS Noetic
 ./build_container.sh
 ```
 
-This builds the dockerfile, and as a post-installation step, compiles ORB_SLAM3 and the ORB_SLAM3 ROS wrapper.
+This builds the dockerfile.
 
 ### Running
+
+```bash
+./run_container.sh
+```
+
+Which starts the container and should attach you into an interactive `bash` terminal.
+
+For persistent stuff,
 
 ```bash
 docker start orbslam3; docker attach orbslam3

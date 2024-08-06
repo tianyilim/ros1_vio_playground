@@ -39,7 +39,9 @@ class ImuDownsamplingNode:
 
     def timer_callback(self, event) -> None:
         if self.last_imu_msg is None:
+            rospy.logwarn_throttle(1.0, "No IMU message received yet. Skipping publish.")
             return
+        rospy.logwarn_once("IMU messages received, publishing!")
 
         # Read the last imu message
         with self.imu_msg_lock:

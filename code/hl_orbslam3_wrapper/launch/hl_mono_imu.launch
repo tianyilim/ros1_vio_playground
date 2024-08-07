@@ -1,16 +1,15 @@
-<!-- FIXME the filepaths are now wrong! -->
-
 <launch>
-    <arg name="left_cam_topic" value="/hetlf/image_rect" />
-    <arg name="right_cam_topic" value="/hetrf/image_rect" />
-    <arg name="settings_filepath" value="$(dirname)/hololens.yaml" />
-    <arg name="rviz_filepath" value="$(dirname)/hololens_viz.rviz" />
+    <arg name="cam_topic" value="/hetlf/image_rect" />
+    <arg name="imu_topic" value="/imu" />
 
-    <node name="orb_slam3_hololens_stereo" pkg="orb_slam3_ros_wrapper"
-        type="orb_slam3_ros_wrapper_stereo" output="screen">
+    <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/hololens.yaml" />
+    <arg name="rviz_filepath" value="$(find hl_orbslam3_wrapper)/viz/hololens_viz.rviz" />
+
+    <node name="orb_slam3_hololens_stereo_imu" pkg="orb_slam3_ros_wrapper"
+        type="orb_slam3_ros_wrapper_mono_inertial" output="screen">
         <!-- Input topics -->
-        <remap from="/camera/left/image_raw" to="$(arg left_cam_topic)" />
-        <remap from="/camera/right/image_raw" to="$(arg right_cam_topic)" />
+        <remap from="/camera/image_raw" to="$(arg cam_topic)" />
+        <remap from="/imu" to="$(arg imu_topic)" />
 
         <!-- Parameters for original ORB-SLAM3 -->
         <param name="voc_file" type="string" value="$(find orb_slam3_ros_wrapper)/config/ORBvoc.txt" />

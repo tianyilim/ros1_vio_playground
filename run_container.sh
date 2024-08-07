@@ -23,6 +23,7 @@ docker run --interactive --tty \
     --mount type=bind,source="$(pwd)/Datasets",target=/Datasets \
     --mount type=bind,source="$(pwd)/code",target=/catkin_ws/src/code \
     --mount type=bind,source="$(pwd)/user",target=/user \
+    --mount type=bind,source="/media/tialim/CVG Storage/tianyi_data",target=/Datasets/ssd \
     --mount type=bind,source="$HOME/mt/large_scale_pgo",target=/Datasets/large_scale_pgo \
     orbslam3:ubuntu20_noetic_cuda
 

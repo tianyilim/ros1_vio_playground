@@ -10,15 +10,19 @@ Usage:
 TODO: Message filters does not work. Perhaps due to the high freq of incoming msgs, or something else, the output
 freqeuncy of the Imu messages is not stable. Therefore, this causes ORB-SLAM3 to segfault!
 --> Need to implement some sort of preintegration after all...
+
+EDIT: This is because the input data itself is quite 'dirty'. The gyro data has random gaps, sometimes for relatively long periods.
+Then there is no accompanying data for the acceleration data --> orbslam3 complains.
 """
 
 import argparse
+from collections import deque
+from threading import Lock
+from typing import Optional
+
+import message_filters
 import rospy
 from sensor_msgs.msg import Imu
-import message_filters
-from typing import Optional
-from threading import Lock
-from collections import deque
 
 
 class ImuDownsamplingNode:
@@ -34,30 +38,73 @@ class ImuDownsamplingNode:
 
         q_size = 100
         tcp_nodelay = False
-        self.message_filter_subs = [message_filters.Subscriber(accel_sub_topic, Imu, queue_size=q_size, tcp_nodelay=tcp_nodelay),
-                                    message_filters.Subscriber(gyro_sub_topic, Imu, queue_size=q_size, tcp_nodelay=tcp_nodelay)]
-        self.time_sync = message_filters.ApproximateTimeSynchronizer(
-            self.message_filter_subs,
-            q_size,  # queue size
-            0.1      # slop between messages
-        )
-        self.time_sync.registerCallback(self.accel_gyro_callback)
+        self.accel_sub = rospy.Subscriber(
+            accel_sub_topic, Imu, self.accel_callback, queue_size=q_size, tcp_nodelay=tcp_nodelay)
+        self.gyro_sub = rospy.Subscriber(
+            gyro_sub_topic, Imu, self.gyro_callback, queue_size=q_size, tcp_nodelay=tcp_nodelay)
 
+        # self.message_filter_subs = [message_filters.Subscriber(accel_sub_topic, Imu, queue_size=q_size, tcp_nodelay=tcp_nodelay),
+        #                             message_filters.Subscriber(gyro_sub_topic, Imu, queue_size=q_size, tcp_nodelay=tcp_nodelay)]
+        # self.time_sync = message_filters.ApproximateTimeSynchronizer(
+        #     self.message_filter_subs,
+        #     q_size,  # queue size
+        #     0.1      # slop between messages
+        # )
+        # self.time_sync.registerCallback(self.accel_gyro_callback)
         self.imu_msg_lock = Lock()
         self.last_imu_msg: Optional[Imu] = None
 
+        self.last_accel_msg: Optional[Imu] = None
+        self.last_gyro_msg: Optional[Imu] = None
+
     def timer_callback(self, event) -> None:
-        if self.last_imu_msg is None:
+        if self.last_accel_msg is None:
             rospy.logwarn_throttle(
-                1.0, "No new IMU messages. Skipping publish.")
+                1.0, "No new accel messages. Skipping publish.")
             return
 
-        # Read the last imu message
-        with self.imu_msg_lock:   
-            last_imu_msg = self.last_imu_msg
-            self.last_imu_msg = None
+        imu_msg = Imu()
+        # Take the latest timestamp
+        imu_msg.header.stamp = self.last_accel_msg.header.stamp
+        imu_msg.header.frame_id = 'imu'
 
-        self.imu_pub.publish(last_imu_msg)
+        imu_msg.orientation_covariance = [-1] * 9
+
+        if self.last_gyro_msg is not None:
+            imu_msg.angular_velocity = self.last_gyro_msg.angular_velocity
+            imu_msg.angular_velocity_covariance = self.last_gyro_msg.angular_velocity_covariance
+
+            assert imu_msg.angular_velocity_covariance[0] != -1
+        else:
+            rospy.logwarn_throttle(
+                1.0, "No new gyro messages. Using empty gyro message.")
+            imu_msg.angular_velocity_covariance = [-1] * 9
+
+        imu_msg.linear_acceleration = self.last_accel_msg.linear_acceleration
+        imu_msg.linear_acceleration_covariance = self.last_accel_msg.linear_acceleration_covariance
+
+        assert imu_msg.linear_acceleration_covariance[0] != -1
+        assert imu_msg.orientation_covariance[0] == -1
+
+        # if self.last_imu_msg is None:
+        #     rospy.logwarn_throttle(
+        #         1.0, "No new IMU messages. Skipping publish.")
+        #     return
+
+        # # Read the last imu message
+        # with self.imu_msg_lock:
+        #     last_imu_msg = self.last_imu_msg
+        #     self.last_imu_msg = None
+
+        self.imu_pub.publish(imu_msg)
+        self.last_accel_msg = None
+        self.last_gyro_msg = None
+
+    def accel_callback(self, msg: Imu) -> None:
+        self.last_accel_msg = msg
+
+    def gyro_callback(self, msg: Imu) -> None:
+        self.last_gyro_msg = msg
 
     def accel_gyro_callback(self, accel_msg: Imu, gyro_msg: Imu) -> None:
         imu_msg = Imu()
@@ -65,7 +112,8 @@ class ImuDownsamplingNode:
         imu_msg.header.stamp = accel_msg.header.stamp if accel_msg.header.stamp > gyro_msg.header.stamp else gyro_msg.header.stamp
         imu_msg.header.frame_id = 'imu'
 
-        rospy.loginfo_throttle(0.1, f"Received Accel and Gyro messages. Gap: {abs(accel_msg.header.stamp.to_sec() - gyro_msg.header.stamp.to_sec()) * 1000:0.2f} ms")
+        rospy.loginfo_throttle(
+            0.1, f"Received Accel and Gyro messages. Gap: {abs(accel_msg.header.stamp.to_sec() - gyro_msg.header.stamp.to_sec()) * 1000:0.2f} ms")
 
         imu_msg.orientation_covariance = [-1] * 9
 

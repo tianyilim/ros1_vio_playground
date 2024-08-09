@@ -1,0 +1,115 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# System config
+#--------------------------------------------------------------------------------------------
+
+# When the variables are commented, the system doesn't load a previous session or not store the current one
+
+# If the LoadFile doesn't exist, the system give a message and create a new Atlas from scratch
+#System.LoadAtlasFromFile: "Session_MH01_MH02_MH03_Stereo60_Pseudo"
+
+# The store file is created from the current session, if a file with the same name exists it is deleted
+#System.SaveAtlasToFile: "Session_MH01_MH02_MH03_Stereo60_Pseudo"
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters. Adjust them!
+#--------------------------------------------------------------------------------------------
+File.version: "1.0"
+
+Camera.type: "PinHole"
+# Images are assumed to be rectified
+# Camera calibration and distortion parameters (OpenCV) 
+Camera1.fx: 257.47900390625
+Camera1.fy: 256.8888854980469
+Camera1.cx: 324.6042175292969
+Camera1.cy: 250.34426879882812
+
+Camera1.k1: 0.0
+Camera1.k2: 0.0
+Camera1.p1: 0.0
+Camera1.p2: 0.0
+
+Camera2.fx: 255.9625244140625
+Camera2.fy: 255.56431579589844
+Camera2.cx: 327.2969055175781
+Camera2.cy: 237.67593383789062
+
+Camera2.k1: 0.0
+Camera2.k2: 0.0
+Camera2.p1: 0.0
+Camera2.p2: 0.0
+
+Camera.width: 480
+Camera.height: 640
+
+# Camera frames per second 
+Camera.fps: 14
+
+# Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
+Camera.RGB: 1 # HL images are grayscale it doesn't matter
+
+# Close/Far threshold. Baseline times.
+Stereo.ThDepth: 60.0
+# Transformation from frontright_fisheye to frontleft_fisheye
+Stereo.T_c1_c2: !!opencv-matrix
+  rows: 4
+  cols: 4
+  dt: f
+  data: [ 9.99973983e-01,  7.20659781e-03, -3.12199183e-04,  1.00000000e-03,
+         -3.05995225e-03,  4.62991389e-01,  8.86357496e-01, -6.20000000e-02,
+          6.53216752e-03, -8.86333481e-01,  4.63001395e-01,  4.20000000e-02,
+          0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  1.00000000e+00]
+
+# Transformation from frontleft_fisheye to kinect_imu_link
+IMU.T_b_c1: !!opencv-matrix
+  rows: 4
+  cols: 4
+  dt: f
+  data: [0.40904351, -0.47356571, -0.78001213,  0.104,
+         0.01599446,  0.85838338, -0.51275934,  0.04,
+         0.91237469,  0.19726501,  0.35869058,  0.163,
+         0.        ,  0.        ,  0.        ,  1.]
+
+# IMU noise: Obtained from Mihai
+IMU.NoiseGyro: 1e-4
+IMU.NoiseAcc: 4e-3
+IMU.GyroWalk: 1e-4
+IMU.AccWalk: 4e-3
+IMU.Frequency: 1000.0
+IMU.InsertKFsWhenLost: 0  # integer: 0 or 1; seemed to crash when activated
+
+#--------------------------------------------------------------------------------------------
+# ORB Parameters
+#--------------------------------------------------------------------------------------------
+
+# ORB Extractor: Number of features per image
+ORBextractor.nFeatures: 1800
+
+# ORB Extractor: Scale factor between levels in the scale pyramid 	
+ORBextractor.scaleFactor: 1.2
+
+# ORB Extractor: Number of levels in the scale pyramid	
+ORBextractor.nLevels: 8
+
+# ORB Extractor: Fast threshold
+# Image is divided in a grid. At each cell FAST are extracted imposing a minimum response.
+# Firstly we impose iniThFAST. If no corners are detected we impose a lower value minThFAST
+# You can lower these values if your images have low contrast			
+ORBextractor.iniThFAST: 10
+ORBextractor.minThFAST: 5
+
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.05
+Viewer.KeyFrameLineWidth: 1.0
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize: 2.0
+Viewer.CameraSize: 0.08
+Viewer.CameraLineWidth: 3.0
+Viewer.ViewpointX: 0.0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -1.8
+Viewer.ViewpointF: 500.0
+Viewer.imageViewScale: 1.0

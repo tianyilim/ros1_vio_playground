@@ -9,46 +9,59 @@ RUN apt-get install -y \
     tmux ranger magic htop build-essential git
 
 RUN apt-get install -y \
-        # Base tools
-        cmake \
-        build-essential \
-        git \
-        unzip \
-        pkg-config \
-        python3-dev \
-        # ROS dependencies
-        python3-catkin-tools python3-osrf-pycommon \
-        ros-noetic-cv-bridge ros-noetic-image-transport ros-noetic-tf \
-        ros-noetic-hector-trajectory-server \
-        # OpenCV dependencies
-        python3-numpy \
-        # Pangolin dependencies
-        libgl1-mesa-dev \
-        libglew-dev \
-        libpython3-dev \
-        libeigen3-dev \
-        apt-transport-https \
-        ca-certificates\
-        software-properties-common
+    # Base tools
+    cmake \
+    build-essential \
+    git \
+    unzip \
+    pkg-config \
+    python3-dev \
+    # ROS dependencies
+    python3-catkin-tools python3-osrf-pycommon \
+    ros-noetic-cv-bridge ros-noetic-image-transport ros-noetic-tf ros-noetic-message-filters \
+    ros-noetic-hector-trajectory-server \
+    # OpenCV dependencies
+    python3-numpy \
+    # Pangolin dependencies
+    libgl1-mesa-dev \
+    libglew-dev \
+    libpython3-dev \
+    libeigen3-dev \
+    apt-transport-https \
+    ca-certificates\
+    software-properties-common \
+    # Ceres dependencies
+    libgoogle-glog-dev \
+    libgflags-dev \
+    libatlas-base-dev \
+    libsuitesparse-dev \
+    # OpenCV dependencies
+    libavcodec-dev libavformat-dev libswscale-dev \
+    libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libgtk-3-dev
 
-# Build OpenCV
-RUN apt-get install -y libavcodec-dev libavformat-dev libswscale-dev
-RUN apt-get install -y libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
-RUN apt-get install -y libgtk-3-dev
+# Build Ceres 1.14.0 for VINS-MONO
+WORKDIR /src
+RUN wget http://ceres-solver.org/ceres-solver-1.14.0.tar.gz && \
+    mkdir /src/ceres-bin && \
+    tar zxf ceres-solver-1.14.0.tar.gz --no-same-owner && \
+    cd /src/ceres-bin && \
+    cmake /src/ceres-solver-1.14.0 -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF && \
+    make -j8 && make install && \
+    rm -rf /src/ceres-solver-1.14.0.tar.gz /src/ceres-bin
 
 RUN cd /tmp && git clone https://github.com/opencv/opencv.git && \
     cd opencv && \
     git checkout 4.4.0 && \
     mkdir build && cd build && \
     cmake -D CMAKE_BUILD_TYPE=Release -D BUILD_EXAMPLES=OFF  -D BUILD_DOCS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D CMAKE_INSTALL_PREFIX=/usr/local .. && \
-    make -j$nproc && make install && \
+    make -j8 && make install && \
     cd / && rm -rf /tmp/opencv
 
 # Build Pangolin
 RUN cd /tmp && git clone https://github.com/stevenlovegrove/Pangolin && \
     cd Pangolin && git checkout v0.6 && mkdir build && cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-std=c++11 .. && \
-    make -j$nproc && make install && \
+    make -j8 && make install && \
     cd / && rm -rf /tmp/Pangolin
 
 # Setup ros entrypoint and post create command that compiles everything
@@ -72,11 +85,15 @@ RUN git clone https://github.com/UZ-SLAMLab/ORB_SLAM3.git && cd ORB_SLAM3 && \
 WORKDIR /catkin_ws/src
 RUN git clone https://github.com/thien94/orb_slam3_ros_wrapper
 
+# Setup VINS-MONO
+WORKDIR /catkin_ws/src
+RUN https://github.com/HKUST-Aerial-Robotics/VINS-Mono.git
+
 # Ensure all ROS dependencies are installed
 RUN rm -rf /etc/ros/rosdep/sources.list.d/20-default.list && \
-sudo rosdep init && \
-rosdep update && \
-rosdep install --from-paths /catkin_ws/src --ignore-src -r -y
+    sudo rosdep init && \
+    rosdep update && \
+    rosdep install --from-paths /catkin_ws/src --ignore-src -r -y
 
 # Modify the catkin workspace to the specific location of the orbslam3 wrapper
 # And copy vocabulary over

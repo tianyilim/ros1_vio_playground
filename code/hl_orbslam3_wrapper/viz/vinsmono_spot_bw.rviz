@@ -7,7 +7,6 @@ Panels:
         - /raw_image1
         - /VIO1
         - /pose_graph1
-        - /IMU readings1
       Splitter Ratio: 0.6193029284477234
     Tree Height: 443
   - Class: rviz/Selection
@@ -32,7 +31,9 @@ Panels:
     Help Height: 78
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /VIO1/VO Path1
+        - /pose_graph1/pose_graph_path1
       Splitter Ratio: 0.5
     Tree Height: 682
 Preferences:
@@ -122,14 +123,14 @@ Visualization Manager:
         - Alpha: 1
           Buffer Length: 1
           Class: rviz/Path
-          Color: 0; 255; 0
+          Color: 255; 255; 127
           Enabled: true
           Head Diameter: 0.30000001192092896
           Head Length: 0.20000000298023224
           Length: 0.30000001192092896
           Line Style: Lines
           Line Width: 0.029999999329447746
-          Name: Path
+          Name: VO Path
           Offset:
             X: 0
             Y: 0
@@ -469,16 +470,6 @@ Visualization Manager:
           Value: true
       Enabled: true
       Name: pose_graph
-    - Alpha: 1
-      Class: rviz_plugin_tutorials/Imu
-      Color: 204; 51; 204
-      Enabled: true
-      History Length: 1
-      Name: IMU readings
-      Queue Size: 10
-      Topic: /imu
-      Unreliable: false
-      Value: true
   Enabled: true
   Global Options:
     Background Color: 0; 0; 0
@@ -505,7 +496,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 10
+      Distance: 37.703548431396484
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -521,9 +512,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7853981852531433
+      Pitch: 0.7003982663154602
       Target Frame: camera
-      Yaw: 0.7853981852531433
+      Yaw: 3.40358567237854
     Saved: ~
 Window Geometry:
   Displays:

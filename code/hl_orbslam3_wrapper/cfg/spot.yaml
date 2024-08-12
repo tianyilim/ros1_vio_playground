@@ -44,10 +44,10 @@ Camera.width: 640
 Camera.height: 480
 
 # Camera frames per second 
-Camera.fps: 14
+Camera.fps: 10
 
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
-Camera.RGB: 1 # HL images are grayscale it doesn't matter
+Camera.RGB: 1 # images are grayscale it doesn't matter
 
 # Close/Far threshold. Baseline times.
 Stereo.ThDepth: 60.0
@@ -72,11 +72,11 @@ IMU.T_b_c1: !!opencv-matrix
          0.        ,  0.        ,  0.        ,  1.]
 
 # IMU noise
-IMU.NoiseGyro: 1.0e-4
-IMU.NoiseAcc: 4.0e-3
-IMU.GyroWalk: 1.0e-4
-IMU.AccWalk: 4.0e-3
-IMU.Frequency: 1000.0
+IMU.NoiseGyro: 1.0e-3
+IMU.NoiseAcc: 4.0e-2
+IMU.GyroWalk: 1.0e-3
+IMU.AccWalk: 4.0e-2
+IMU.Frequency: 500.0
 IMU.InsertKFsWhenLost: 0  # integer: 0 or 1; seemed to crash when activated
 
 #--------------------------------------------------------------------------------------------

@@ -112,9 +112,6 @@ COPY docker_build_utils/vimrc /root/.vimrc
 COPY docker_build_utils/bash_profile_ext /tmp/bash_profile_ext
 RUN cat /tmp/bash_profile_ext >> /root/.bash_profile && rm /tmp/bash_profile_ext
 
-# Add orbslam3 source to the bashrc
-RUN echo "source /catkin_ws/devel/setup.bash" >> /root/.bashrc
-
 USER $USERNAME
 # terminal colors with xterm
 ENV TERM xterm-256color

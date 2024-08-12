@@ -112,8 +112,10 @@ if ! shopt -oq posix; then
         . /etc/bash_completion
     fi
 fi
-[ -r /local/home/tialim/.config_ubuntu_22.04/byobu/prompt ] && . /local/home/tialim/.config_ubuntu_22.04/byobu/prompt #byobu-prompt#
 
 ##############################################################################################
 ############################### Bash customization begins here ###############################
 ##############################################################################################
+
+source /catkin_ws/devel/setup.bash
+export ROSCONSOLE_FORMAT='[${severity}] [${time}] [${node}]: ${message}'

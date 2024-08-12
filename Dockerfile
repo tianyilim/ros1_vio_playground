@@ -87,7 +87,7 @@ RUN git clone https://github.com/thien94/orb_slam3_ros_wrapper
 
 # Setup VINS-MONO
 WORKDIR /catkin_ws/src
-RUN https://github.com/HKUST-Aerial-Robotics/VINS-Mono.git
+RUN git clone https://github.com/HKUST-Aerial-Robotics/VINS-Mono.git
 
 # Ensure all ROS dependencies are installed
 RUN rm -rf /etc/ros/rosdep/sources.list.d/20-default.list && \

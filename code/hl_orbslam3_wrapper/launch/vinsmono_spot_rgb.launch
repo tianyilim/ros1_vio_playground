@@ -22,7 +22,7 @@
         <param name="height" type="int" value="980" />
     </node>
 
-    <arg name="config_path" default="$(find hl_orbslam3_wrapper)/cfg/vinsmono_spot.yaml" />
+    <arg name="config_path" default="$(find hl_orbslam3_wrapper)/cfg/vinsmono_spot_rgb.yaml" />
     <arg name="vins_path" default="$(find feature_tracker)/../config/../" />
 
     <node name="feature_tracker" pkg="feature_tracker" type="feature_tracker" output="screen">

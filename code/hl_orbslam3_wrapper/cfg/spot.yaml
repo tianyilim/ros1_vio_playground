@@ -72,10 +72,10 @@ IMU.T_b_c1: !!opencv-matrix
          0.        ,  0.        ,  0.        ,  1.]
 
 # IMU noise
-IMU.NoiseGyro: 1e-4
-IMU.NoiseAcc: 4e-3
-IMU.GyroWalk: 1e-4
-IMU.AccWalk: 4e-3
+IMU.NoiseGyro: 1.0e-4
+IMU.NoiseAcc: 4.0e-3
+IMU.GyroWalk: 1.0e-4
+IMU.AccWalk: 4.0e-3
 IMU.Frequency: 1000.0
 IMU.InsertKFsWhenLost: 0  # integer: 0 or 1; seemed to crash when activated
 

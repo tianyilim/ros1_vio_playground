@@ -40,8 +40,8 @@ Camera2.k2: 0.0
 Camera2.p1: 0.0
 Camera2.p2: 0.0
 
-Camera.width: 480
-Camera.height: 640
+Camera.width: 640
+Camera.height: 480
 
 # Camera frames per second 
 Camera.fps: 14
@@ -71,7 +71,7 @@ IMU.T_b_c1: !!opencv-matrix
          0.91237469,  0.19726501,  0.35869058,  0.163,
          0.        ,  0.        ,  0.        ,  1.]
 
-# IMU noise: Obtained from Mihai
+# IMU noise
 IMU.NoiseGyro: 1e-4
 IMU.NoiseAcc: 4e-3
 IMU.GyroWalk: 1e-4

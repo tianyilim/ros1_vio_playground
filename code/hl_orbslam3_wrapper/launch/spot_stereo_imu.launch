@@ -1,11 +1,10 @@
 <launch>
-    <!-- TODO change these -->
-    <arg name="left_cam_topic" value="/spot/camera/frontleft/image" />
-    <arg name="right_cam_topic" value="/spot/camera/frontright/image" />
+    <arg name="left_cam_topic" value="/spot/camera/frontleft/image_rot" />
+    <arg name="right_cam_topic" value="/spot/camera/frontright/image_rot" />
     <arg name="imu_topic" value="/imu" />
 
     <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/spot.yaml" />
-    <arg name="rviz_filepath" value="$(find hl_orbslam3_wrapper)/viz/hololens_viz.rviz" />
+    <arg name="rviz_filepath" value="$(find hl_orbslam3_wrapper)/viz/spot_viz.rviz" />
 
     <node name="orb_slam3_spot_stereo_imu" pkg="orb_slam3_ros_wrapper"
         type="orb_slam3_ros_wrapper_stereo_inertial" output="screen">

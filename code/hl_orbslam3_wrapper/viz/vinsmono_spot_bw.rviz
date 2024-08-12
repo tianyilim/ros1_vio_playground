@@ -34,6 +34,7 @@ Panels:
       Expanded:
         - /VIO1/VO Path1
         - /pose_graph1/pose_graph_path1
+        - /Spot Odom1/Status1
       Splitter Ratio: 0.5
     Tree Height: 682
 Preferences:
@@ -470,6 +471,41 @@ Visualization Manager:
           Value: true
       Enabled: true
       Name: pose_graph
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 100
+      Name: Spot Odom
+      Position Tolerance: 0.10000000149011612
+      Queue Size: 10
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 255; 25; 0
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic: /spot/odometry
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 0; 0; 0
@@ -496,7 +532,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 37.703548431396484
+      Distance: 73.56580352783203
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -512,9 +548,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7003982663154602
+      Pitch: 0.7853983044624329
       Target Frame: camera
-      Yaw: 3.40358567237854
+      Yaw: 4.998584270477295
     Saved: ~
 Window Geometry:
   Displays:

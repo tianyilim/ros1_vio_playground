@@ -4,6 +4,15 @@ Look at the files in the `launch` folder. It should give sufficient information 
 
 This is meant to be run in the Docker container provided in this repo.
 
+## Rosbag examples
+```bash
+cd /Datasets/ssd/spot-rosbags
+rosbag play --clock hydro/2023-11-24-10-53-HYDRO.bag \
+    --pause \                                   # So that nodes have time to startup properly
+    --start 32 \                                # For this rosbag, interesting stuff happens only here
+    /tf:=/tf_null /tf_static:=/tf_dev_null      # No TF shenanigans
+```
+
 ## ORB-SLAM3
 
 - ORB-SLAM3 was found to be brittle. You can still check the launchfiles, for example:
@@ -20,11 +29,4 @@ This is meant to be run in the Docker container provided in this repo.
    rviz -d viz/vinsmono_spot_bw.rviz
    ```
 
-## Rosbag examples
-```bash
-cd /Datasets/ssd/spot-rosbags
-rosbag play --clock hydro/2023-11-24-10-53-HYDRO.bag \
-    --pause \                                   # So that nodes have time to startup properly
-    --start 32 \                                # For this rosbag, interesting stuff happens only here
-    /tf:=/tf_null /tf_static:=/tf_dev_null      # No TF shenanigans
-```
+### Parsing VINS-MONO output

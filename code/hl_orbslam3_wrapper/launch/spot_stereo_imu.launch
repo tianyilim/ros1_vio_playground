@@ -1,6 +1,6 @@
 <launch>
-    <arg name="left_cam_topic" value="/spot/camera/frontleft/image_rot" />
-    <arg name="right_cam_topic" value="/spot/camera/frontright/image_rot" />
+    <arg name="left_cam_topic" value="/spot/camera/frontleft/image" />
+    <arg name="right_cam_topic" value="/spot/camera/frontright/image" />
     <arg name="imu_topic" value="/imu" />
 
     <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/spot.yaml" />

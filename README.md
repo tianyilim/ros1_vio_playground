@@ -33,3 +33,8 @@ This should attach you into an interactive `bash` terminal where you can do stuf
 `tmux` is installed, but the leader is `C-a` to avoid conflicts with nested `tmux` sesisons.
 
 Code modifications can be done in the `code` folder.
+
+If you have any issues with `rviz` it's best to rebuild the container: `docker container rm orbslam3; ./run_container.sh`
+
+### Code Readme
+Look at [the code](./code/hl_orbslam3_wrapper/README.md).

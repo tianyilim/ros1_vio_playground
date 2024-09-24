@@ -14,7 +14,7 @@ assert VINS_MONO_DATA.exists()
 
 
 def correct_vins_out(file: Path):
-    out_file = file.parent / (file.stem + '_processed' + file.suffix)
+    out_file = file.parent / (file.stem + '_processed.txt')
     print("Saving to", out_file)
 
     with open(file, 'r') as f:

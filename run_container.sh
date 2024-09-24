@@ -9,6 +9,8 @@ xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
 xhost +local:docker
 
 # Create a new container. It attaches to the current terminal and should compile.
+# TODO: Adapt the bind mounts to your needs.
+
 docker run --interactive --tty \
     --privileged --net=host --ipc=host \
     --name="orbslam3" \

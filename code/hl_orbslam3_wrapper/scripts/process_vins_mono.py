@@ -9,7 +9,7 @@ from pathlib import Path
 import csv
 
 VINS_MONO_DATA = Path(
-    "/local/home/tialim/src/orbslam3_docker/user/vins_mono_out")
+    "/user/vins_mono_out")
 assert VINS_MONO_DATA.exists()
 
 

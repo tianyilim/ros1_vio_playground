@@ -9,7 +9,7 @@ This is meant to be run in the Docker container provided in this repo.
 cd /Datasets/ssd/spot-rosbags
 rosbag play --clock hydro/2023-11-24-10-53-HYDRO.bag \
     --pause \                                   # So that nodes have time to startup properly
-    --start 32 \                                # For this rosbag, interesting stuff happens only here
+    --start 32 \                                # For this rosbag, interesting stuff happens here
     /tf:=/tf_null /tf_static:=/tf_dev_null      # No TF shenanigans
 ```
 
@@ -30,3 +30,6 @@ rosbag play --clock hydro/2023-11-24-10-53-HYDRO.bag \
    ```
 
 ### Parsing VINS-MONO output
+- You can save the Vins-Mono output following the instructions [here](https://github.com/HKUST-Aerial-Robotics/VINS-Mono?tab=readme-ov-file#3-visual-inertial-odometry-and-pose-graph-reuse-on-public-datasets).
+- Essentially, enter `s` in the roslaunch terminal with `vins_estimator`. The current pose graph will be saved. By configuration, this is to `/user/vins_mono_out`.
+- After which, you can run `code/hl_orbslam3_wrapper/scripts/process_vins_mono.py` to parse the output trajectory. Save it somewhere safe!

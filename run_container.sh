@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+docker stop orbslam3 || true && docker rm orbslam3 || true
+
 # UI permisions
 XSOCK=/tmp/.X11-unix
 XAUTH=/tmp/.docker.xauth

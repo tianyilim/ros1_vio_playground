@@ -64,11 +64,6 @@ RUN cd /tmp && git clone https://github.com/stevenlovegrove/Pangolin && \
     make -j8 && make install && \
     cd / && rm -rf /tmp/Pangolin
 
-# Setup ros entrypoint and post create command that compiles everything
-COPY docker_build_utils/ros_entrypoint.sh /ros_entrypoint.sh
-COPY docker_build_utils/post_create_command.sh /post_create_command.sh
-RUN chmod +x /ros_entrypoint.sh
-RUN chmod +x /post_create_command.sh
 ENV ROS_DISTRO noetic
 ENV LANG en_US.UTF-8
 
@@ -115,6 +110,12 @@ COPY docker_build_utils/tmux.conf /root/.tmux.conf
 COPY docker_build_utils/vimrc /root/.vimrc
 COPY docker_build_utils/bash_profile_ext /tmp/bash_profile_ext
 RUN cat /tmp/bash_profile_ext >> /root/.bash_profile && rm /tmp/bash_profile_ext
+
+# Setup ros entrypoint and post create command that compiles everything
+COPY docker_build_utils/ros_entrypoint.sh /ros_entrypoint.sh
+COPY docker_build_utils/post_create_command.sh /post_create_command.sh
+RUN chmod +x /ros_entrypoint.sh
+RUN chmod +x /post_create_command.sh
 
 USER $USERNAME
 # terminal colors with xterm

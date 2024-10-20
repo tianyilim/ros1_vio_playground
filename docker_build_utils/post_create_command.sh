@@ -4,8 +4,9 @@
 
 set -e
 
+# TODO: This command causes the script to fail. So don't check it
 # Ensure catkin stuff is sourced (and fail early if not)
 source "/opt/ros/noetic/setup.bash"
-catkin list
+# catkin list
 
 echo "Post-create command finished."

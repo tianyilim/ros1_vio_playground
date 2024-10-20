@@ -13,11 +13,9 @@ xhost +local:docker
 
 # Create a new container. It attaches to the current terminal and should compile.
 # TODO: Adapt the bind mounts to your needs.
-
 docker run --interactive --tty \
     --privileged --net=host --ipc=host \
     --name="orbslam3" \
-    --gpus=all \
     -e "DISPLAY=$DISPLAY" \
     -e "QT_X11_NO_MITSHM=1" \
     -e "XAUTHORITY=$XAUTH" \
@@ -28,8 +26,8 @@ docker run --interactive --tty \
     --mount type=bind,source="$(pwd)/Datasets",target=/Datasets \
     --mount type=bind,source="$(pwd)/code",target=/catkin_ws/src/code \
     --mount type=bind,source="$(pwd)/user",target=/user \
-    --mount type=bind,source="/media/tialim/CVG Storage/tianyi_data",target=/Datasets/ssd \
-    --mount type=bind,source="$HOME/mt/large_scale_pgo",target=/Datasets/large_scale_pgo \
+    --mount type=bind,source="/mnt/ssd_2T",target=/mnt/ssd_2T \
+    --mount type=bind,source="/mnt/ssd_4T",target=/mnt/ssd_4T \
     orbslam3:ubuntu20_noetic_cuda
 
 # TODO-neat way to mount custom dataset folder?

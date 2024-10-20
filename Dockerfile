@@ -8,8 +8,8 @@ RUN apt-get install -y \
     gnupg2 curl lsb-core vim wget python3-pip libpng16-16 libjpeg-turbo8 libtiff5 \
     tmux ranger magic htop build-essential git
 
+# Base tools
 RUN apt-get install -y \
-    # Base tools
     cmake \
     build-essential \
     git \
@@ -85,9 +85,13 @@ RUN git clone https://github.com/UZ-SLAMLab/ORB_SLAM3.git && cd ORB_SLAM3 && \
 WORKDIR /catkin_ws/src
 RUN git clone https://github.com/thien94/orb_slam3_ros_wrapper
 
-# Setup VINS-MONO
+# Setup VINS-Fusion
 WORKDIR /catkin_ws/src
-RUN git clone https://github.com/HKUST-Aerial-Robotics/VINS-Mono.git
+RUN git clone https://github.com/HKUST-Aerial-Robotics/VINS-Fusion.git
+
+# Setup OpenVINS
+WORKDIR /catkin_ws/src
+RUN git clone https://github.com/rpng/open_vins/
 
 # Ensure all ROS dependencies are installed
 RUN rm -rf /etc/ros/rosdep/sources.list.d/20-default.list && \

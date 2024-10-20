@@ -87,7 +87,7 @@ RUN git clone https://github.com/thien94/orb_slam3_ros_wrapper
 
 # Setup VINS-Fusion
 WORKDIR /catkin_ws/src
-RUN git clone https://github.com/HKUST-Aerial-Robotics/VINS-Fusion.git
+RUN git clone https://github.com/guisoares9/VINS-Fusion.git
 
 # Setup OpenVINS
 WORKDIR /catkin_ws/src

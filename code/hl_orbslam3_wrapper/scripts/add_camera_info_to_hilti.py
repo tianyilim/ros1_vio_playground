@@ -12,6 +12,7 @@ import rosbag
 import tf
 from geometry_msgs.msg import TransformStamped
 from sensor_msgs.msg import CameraInfo
+from tf2_msgs.msg import TFMessage
 from tqdm import tqdm
 
 IN_BAG = "/mnt/ssd_2T/hilti-22/exp23_the_sheldonian_slam_part_0.bag"
@@ -119,6 +120,8 @@ with outbag as outbag:
             last_tf_written_timestamp = t
 
             # Add TF messages
+            tf_static_msg = TFMessage()
+
             for i, T_cam_imu in enumerate(T_cams_imu):
                 T_imu_cam = np.linalg.inv(T_cam_imu)
                 tf_msg = TransformStamped()
@@ -136,7 +139,9 @@ with outbag as outbag:
                 tf_msg.transform.rotation.z = q[2]
                 tf_msg.transform.rotation.w = q[3]
 
-                outbag.write("/tf_static", tf_msg, last_tf_written_timestamp)
+                tf_static_msg.transforms.append(tf_msg)
+
+            outbag.write("/tf_static", tf_static_msg, last_tf_written_timestamp)
 
         # Write CameraInfo message
         if topic == "/alphasense/cam0/image_raw":

@@ -70,9 +70,9 @@ ENV LANG en_US.UTF-8
 # Setup catkin ws
 RUN mkdir -p /catkin_ws/src /catkin_ws/build /catkin_ws/devel /catkin_ws/install /ORB_SLAM3
 
-# Setup orbslam
+# Setup orbslam. This particular fork has a fix for Segfault on KITTI.
 WORKDIR /
-RUN git clone https://github.com/UZ-SLAMLab/ORB_SLAM3.git && cd ORB_SLAM3 && \
+RUN git clone https://github.com/Muhammad0312/ORB_SLAM3/tree/segmentation_fix.git && cd ORB_SLAM3 && \
     cd Vocabulary && tar -xvf ORBvoc.txt.tar.gz && cd .. && \
     ./build.sh
 

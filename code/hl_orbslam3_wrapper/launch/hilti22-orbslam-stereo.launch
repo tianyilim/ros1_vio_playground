@@ -19,7 +19,7 @@
 
         <!-- Parameters for ROS -->
         <param name="world_frame_id" type="string" value="world" />
-        <param name="cam_frame_id" type="string" value="cam1_sensor_frame" />
+        <param name="cam_frame_id" type="string" value="cam1_orbslam" />
         <param name="enable_pangolin" type="bool" value="true" />
 
         <!-- World frame orientation -->
@@ -35,8 +35,13 @@
     <node pkg="hector_trajectory_server" type="hector_trajectory_server"
         name="trajectory_server_orb_slam3" output="screen" ns="orb_slam3_ros">
         <param name="/target_frame_name" value="/world" />
-        <param name="/source_frame_name" value="/cam1_sensor_frame" />
+        <param name="/source_frame_name" value="/cam1_orbslam" />
         <param name="/trajectory_update_rate" value="15.0" />
         <param name="/trajectory_publish_rate" value="15.0" />
     </node>
+
+    <!-- Fix the TF tree -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="cam1_orbslam_imu_transform"
+        args="0.06262779955244471 0.01343471252962214 -0.05050835847481363 -0.499296 -0.5011652 -0.4980017 0.501529 cam1_orbslam imu_sensor_frame" />
+
 </launch>

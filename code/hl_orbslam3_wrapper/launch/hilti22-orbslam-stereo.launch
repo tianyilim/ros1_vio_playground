@@ -13,7 +13,7 @@
     <!-- Always use sim time -->
     <param name="use_sim_time" value="true" />
 
-    <node name="orb_slam3_stereo_inertial" pkg="orb_slam3_ros_wrapper"
+    <node name="orb_slam3_stereo_inertial" pkg="orb_slam3_ros_wrapper" required="True"
         type="orb_slam3_ros_wrapper_stereo_inertial" output="screen" ns="/">
         <!-- Input topics -->
         <remap from="/camera/left/image_raw" to="$(arg left_cam_topic)" />

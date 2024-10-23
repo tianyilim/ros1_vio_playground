@@ -4,7 +4,8 @@
 
     <arg name="config_path"
         default="$(find hl_orbslam3_wrapper)/cfg/vins-fusion/hilti22-vins-stereo.yaml" />
-    <node name="vins_node" pkg="vins" type="vins_node" output="screen" args="$(arg config_path)" />
+    <node name="vins_node" pkg="vins" type="vins_node" output="screen" args="$(arg config_path)"
+        required="True" />
 
     <!-- Fix the TF tree -->
     <node pkg="tf2_ros" type="static_transform_publisher" name="body_imu_transform"

@@ -45,8 +45,8 @@ pprint(T_cams_imu)
 Cam0_CamInfo = CameraInfo()
 Cam0_CamInfo.height = 540
 Cam0_CamInfo.width = 720
-Cam0_CamInfo.distortion_model = "plumb_bob"
-Cam0_CamInfo.D = [0.03696737352869157, -0.008917880497032812, 0.008912969593422046, -0.0037685977496087313, 0.0]
+Cam0_CamInfo.distortion_model = "equidistant"
+Cam0_CamInfo.D = [-0.03696737352869157, -0.008917880497032812, 0.008912969593422046, -0.0037685977496087313]
 Cam0_CamInfo.K = [351.31400364193297, 0.0, 367.8522793375995,
                   0.0, 351.4911744656785, 253.8402144980996,
                   0.0, 0.0, 1.0]
@@ -57,8 +57,8 @@ Cam0_CamInfo.P = [351.31400364193297, 0.0, 367.8522793375995, 0.0,
 Cam1_CamInfo = CameraInfo()
 Cam1_CamInfo.height = 540
 Cam1_CamInfo.width = 720
-Cam1_CamInfo.distortion_model = "plumb_bob"
-Cam1_CamInfo.D = [-0.039086652082708805, -0.005525347047415151, 0.004398151558986798, -0.0019701263170917808, 0.0]
+Cam1_CamInfo.distortion_model = "equidistant"
+Cam1_CamInfo.D = [-0.039086652082708805, -0.005525347047415151, 0.004398151558986798, -0.0019701263170917808]
 Cam1_CamInfo.K = [352.6489794433894, 0.0, 347.8170010310082,
                   0.0, 352.8586498571586, 270.5806692485468,
                   0.0, 0.0, 1.0]
@@ -69,8 +69,8 @@ Cam1_CamInfo.P = [352.6489794433894, 0.0, 347.8170010310082, 0.0,
 Cam2_CamInfo = CameraInfo()
 Cam2_CamInfo.height = 540
 Cam2_CamInfo.width = 720
-Cam2_CamInfo.distortion_model = "plumb_bob"
-Cam2_CamInfo.D = [-0.041202246303621064, -0.0012607385825244833, 0.0006712169937177444, -0.0006234254968089226, 0.0]
+Cam2_CamInfo.distortion_model = "equidistant"
+Cam2_CamInfo.D = [-0.041202246303621064, -0.0012607385825244833, 0.0006712169937177444, -0.0006234254968089226]
 Cam2_CamInfo.K = [350.70040966794545, 0.0, 375.2977403521422,
                   0.0, 350.8792449525716, 268.5927747079796,
                   0.0, 0.0, 1.0]
@@ -81,8 +81,8 @@ Cam2_CamInfo.P = [350.70040966794545, 0.0, 375.2977403521422, 0.0,
 Cam3_CamInfo = CameraInfo()
 Cam3_CamInfo.height = 540
 Cam3_CamInfo.width = 720
-Cam3_CamInfo.distortion_model = "plumb_bob"
-Cam3_CamInfo.D = [-0.03890973498616883, -0.002604676547864069, 0.0004634700730293949, -0.00036698216675371063, 0.0]
+Cam3_CamInfo.distortion_model = "equidistant"
+Cam3_CamInfo.D = [-0.03890973498616883, -0.002604676547864069, 0.0004634700730293949, -0.00036698216675371063]
 Cam3_CamInfo.K = [352.9514843860555, 0.0, 363.93345228274336,
                   0.0, 353.32837903547403, 266.14511705007413,
                   0.0, 0.0, 1.0]
@@ -93,8 +93,8 @@ Cam3_CamInfo.P = [352.9514843860555, 0.0, 363.93345228274336, 0.0,
 Cam4_CamInfo = CameraInfo()
 Cam4_CamInfo.height = 540
 Cam4_CamInfo.width = 720
-Cam4_CamInfo.distortion_model = "plumb_bob"
-Cam4_CamInfo.D = [-0.03842764034005408, -0.005841411460411122, 0.003451041303088915, -0.0011463543672005018, 0.0]
+Cam4_CamInfo.distortion_model = "equidistant"
+Cam4_CamInfo.D = [-0.03842764034005408, -0.005841411460411122, 0.003451041303088915, -0.0011463543672005018]
 Cam4_CamInfo.K = [351.5132148653381, 0.0, 342.8425988673232,
                   0.0, 351.7557554938886, 259.91793254535776,
                   0.0, 0.0, 1.0]
@@ -106,16 +106,15 @@ Cam4_CamInfo.P = [351.5132148653381, 0.0, 342.8425988673232, 0.0,
 inbag = rosbag.Bag(IN_BAG)
 outbag = rosbag.Bag(OUT_BAG, "w")
 
-TOTAL_MESSAGE_COUNT = -1
+TOTAL_MESSAGE_COUNT = 500
 msgs_written = 0
 last_tf_written_timestamp = None
 
 print("Adding CameraInfo and TF messages to the bag...")
 with outbag as outbag:
-
     for topic, msg, t in tqdm(inbag.read_messages(), total=inbag.get_message_count()):
 
-        # Write Tf_static message
+        # Write Tf_static messages every 1 second
         if last_tf_written_timestamp is None or (t - last_tf_written_timestamp).to_sec() > 1.0:
             last_tf_written_timestamp = t
 

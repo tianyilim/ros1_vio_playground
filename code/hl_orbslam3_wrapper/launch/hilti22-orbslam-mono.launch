@@ -17,6 +17,7 @@
         <param name="world_frame_id" type="string" value="world" />
         <param name="cam_frame_id" type="string" value="cam1_orbslam" />
         <param name="enable_pangolin" type="bool" value="true" />
+        <param name="traj_save_file" type="string" value="/user/orbslam3_traj.tum" />
 
         <!-- World frame orientation -->
         <param name="world_roll" type="double" value="0.0" />

@@ -6,14 +6,51 @@ These can be extracted from https://storage.googleapis.com/hsc2022/calibration/2
 
 from copy import deepcopy
 from pprint import pprint
+from typing import Optional
 
+import cv2
 import numpy as np
 import rosbag
 import tf
+from cv_bridge import CvBridge, CvBridgeError
 from geometry_msgs.msg import TransformStamped
-from sensor_msgs.msg import CameraInfo
+from sensor_msgs.msg import CameraInfo, Image
 from tf2_msgs.msg import TFMessage
 from tqdm import tqdm
+
+CV_BRIDGE = CvBridge()
+
+
+def rectify_image(img_msg: Image, cam_info: CameraInfo) -> Optional[Image]:
+    assert cam_info.distortion_model == "equidistant"
+
+    try:
+        distorted = CV_BRIDGE.imgmsg_to_cv2(img_msg, desired_encoding="mono8")
+
+        K = np.array(cam_info.K).reshape((3, 3))
+        D = np.array(cam_info.D)
+
+        undistorted = cv2.fisheye.undistortImage(distorted, K, D, Knew=K)
+
+        # print("Undistorting with K=")
+        # pprint(K)
+        # pprint("And D=")
+        # pprint(D)
+        # cv2.imshow("Distorted Image", distorted)
+        # cv2.imshow("Undistorted Image", undistorted)
+        # cv2.waitKey(1)
+
+        out_msg = CV_BRIDGE.cv2_to_imgmsg(undistorted, encoding="mono8")
+
+    except CvBridgeError:
+        print(CvBridgeError)
+
+        return None
+
+    out_msg.header = img_msg.header
+
+    return out_msg
+
 
 IN_BAG = "/mnt/ssd_2T/hilti-22/exp23_the_sheldonian_slam_part_0.bag"
 OUT_BAG = "/mnt/ssd_2T/hilti-22/exp23_the_sheldonian_slam_part_0+.bag"
@@ -102,16 +139,19 @@ Cam4_CamInfo.P = [351.5132148653381, 0.0, 342.8425988673232, 0.0,
                   0.0, 351.7557554938886, 259.91793254535776, 0.0,
                   0.0, 0.0, 1.0, 0.0]
 
+camera_infos = [Cam0_CamInfo, Cam1_CamInfo, Cam2_CamInfo, Cam3_CamInfo, Cam4_CamInfo]
+
 # Read all messages from the input bag
 inbag = rosbag.Bag(IN_BAG)
 outbag = rosbag.Bag(OUT_BAG, "w")
 
-TOTAL_MESSAGE_COUNT = 500
+TOTAL_MESSAGE_COUNT = -1
 msgs_written = 0
 last_tf_written_timestamp = None
 
 print("Adding CameraInfo and TF messages to the bag...")
 with outbag as outbag:
+    topic: str
     for topic, msg, t in tqdm(inbag.read_messages(), total=inbag.get_message_count()):
 
         # Write Tf_static messages every 1 second
@@ -142,33 +182,24 @@ with outbag as outbag:
 
             outbag.write("/tf_static", tf_static_msg, last_tf_written_timestamp)
 
-        # Write CameraInfo message
-        if topic == "/alphasense/cam0/image_raw":
-            Cam0_CamInfo.header = msg.header
-            outbag.write("/alphasense/cam0/camera_info", Cam0_CamInfo, t)
-
-            msgs_written += 1
-            if TOTAL_MESSAGE_COUNT > 0 and msgs_written >= TOTAL_MESSAGE_COUNT:
-                break
-
-        elif topic == "/alphasense/cam1/image_raw":
-            Cam1_CamInfo.header = msg.header
-            outbag.write("/alphasense/cam1/camera_info", Cam1_CamInfo, t)
-
-        elif topic == "/alphasense/cam2/image_raw":
-            Cam2_CamInfo.header = msg.header
-            outbag.write("/alphasense/cam2/camera_info", Cam2_CamInfo, t)
-
-        elif topic == "/alphasense/cam3/image_raw":
-            Cam3_CamInfo.header = msg.header
-            outbag.write("/alphasense/cam3/camera_info", Cam3_CamInfo, t)
-
-        elif topic == "/alphasense/cam4/image_raw":
-            Cam4_CamInfo.header = msg.header
-            outbag.write("/alphasense/cam4/camera_info", Cam4_CamInfo, t)
-
         # Write all other messages except PC2
         if topic == "/hesai/pandar":
             continue
 
         outbag.write(topic, msg, t)
+
+        if topic.endswith("image_raw") and topic.startswith("/alphasense"):
+            cam_idx = int(topic.split("/")[2][-1])
+
+            cam_info = camera_infos[cam_idx]
+            cam_info.header = msg.header
+            outbag.write(f"/alphasense/cam{cam_idx}/camera_info", cam_info, t)
+
+            rectified_image = rectify_image(msg, cam_info)
+            if rectified_image is not None:
+                outbag.write(f"/alphasense/cam{cam_idx}/image_rect", rectified_image, t)
+
+            if cam_idx == 0:
+                msgs_written += 1
+                if TOTAL_MESSAGE_COUNT > 0 and msgs_written >= TOTAL_MESSAGE_COUNT:
+                    break

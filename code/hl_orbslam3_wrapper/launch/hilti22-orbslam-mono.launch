@@ -16,7 +16,7 @@
 
         <!-- Parameters for ROS -->
         <param name="world_frame_id" type="string" value="world" />
-        <param name="cam_frame_id" type="string" value="camera" />
+        <param name="cam_frame_id" type="string" value="cam0_sensor_frame" />
         <param name="enable_pangolin" type="bool" value="true" />
 
         <!-- World frame orientation -->

@@ -68,17 +68,13 @@ ENV ROS_DISTRO noetic
 ENV LANG en_US.UTF-8
 
 # Setup catkin ws
-RUN mkdir -p /catkin_ws/src /catkin_ws/build /catkin_ws/devel /catkin_ws/install /ORB_SLAM3
+RUN mkdir -p /catkin_ws/src /catkin_ws/build /catkin_ws/devel /catkin_ws/install
 
 # Setup orbslam. This particular fork has a fix for Segfault on KITTI.
 WORKDIR /
 RUN git clone https://github.com/Muhammad0312/ORB_SLAM3.git && cd ORB_SLAM3 && \
     cd Vocabulary && tar -xvf ORBvoc.txt.tar.gz && cd .. && \
     ./build.sh
-
-# Clone orbslam ros wrapper
-WORKDIR /catkin_ws/src
-RUN git clone https://github.com/thien94/orb_slam3_ros_wrapper
 
 # Setup VINS-Fusion
 WORKDIR /catkin_ws/src
@@ -93,12 +89,6 @@ RUN rm -rf /etc/ros/rosdep/sources.list.d/20-default.list && \
     sudo rosdep init && \
     rosdep update && \
     rosdep install --from-paths /catkin_ws/src --ignore-src -r -y
-
-# Modify the catkin workspace to the specific location of the orbslam3 wrapper
-# And copy vocabulary over
-WORKDIR /catkin_ws/src
-RUN sed -i 's/$ENV{HOME}\/Packages//' orb_slam3_ros_wrapper/CMakeLists.txt && \
-    cp /ORB_SLAM3/Vocabulary/ORBvoc.txt orb_slam3_ros_wrapper/config/ORBvoc.txt
 
 # Build the catkin workspace, sourcing in `sh` syntax
 WORKDIR /catkin_ws

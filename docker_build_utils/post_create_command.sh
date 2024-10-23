@@ -9,4 +9,9 @@ set -e
 source "/opt/ros/noetic/setup.bash"
 # catkin list
 
+# Modify the catkin workspace to the specific location of the orbslam3 wrapper, and copy vocabulary over
+cd /catkin_ws/src
+sed -i 's/$ENV{HOME}\/Packages//' orb_slam3_ros_wrapper/CMakeLists.txt
+cp /ORB_SLAM3/Vocabulary/ORBvoc.txt orb_slam3_ros_wrapper/config/ORBvoc.txt
+
 echo "Post-create command finished."

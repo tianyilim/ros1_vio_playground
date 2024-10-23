@@ -1,8 +1,18 @@
 <launch>
-    <arg name="config_path" default="$(find hl_orbslam3_wrapper)/cfg/vins-fusion/hilti22-vins-stereo.yaml" />
+    <arg name="rosbag_path" default="" />
+    <arg name="viz" default="false" />
+
+    <arg name="config_path"
+        default="$(find hl_orbslam3_wrapper)/cfg/vins-fusion/hilti22-vins-stereo.yaml" />
     <node name="vins_node" pkg="vins" type="vins_node" output="screen" args="$(arg config_path)" />
 
     <!-- Fix the TF tree -->
     <node pkg="tf2_ros" type="static_transform_publisher" name="body_imu_transform"
         args="0 0 0 0 0 0 1 body imu_sensor_frame" />
+
+    <!-- Play rosbag -->
+    <group if="$(eval arg('rosbag_path') != '')">
+        <node pkg="rosbag" type="play" name="rosbag_player"
+            args="--clock $(arg rosbag_path) --delay 5" required="True" />
+    </group>
 </launch>

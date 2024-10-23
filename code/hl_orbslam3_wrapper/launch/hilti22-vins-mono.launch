@@ -1,0 +1,8 @@
+<launch>
+    <arg name="config_path" default="$(find hl_orbslam3_wrapper)/cfg/vins-fusion/hilti22-vins-mono.yaml" />
+    <node name="vins_node" pkg="vins" type="vins_node" output="screen" args="$(arg config_path)" />
+
+    <!-- Fix the TF tree -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="body_imu_transform"
+        args="0 0 0 0 0 0 1 body imu_sensor_frame" />
+</launch>

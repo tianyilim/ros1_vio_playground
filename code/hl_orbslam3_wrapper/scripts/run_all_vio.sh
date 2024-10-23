@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ROSBAG_PATH="/mnt/ssd_2T/hilti-22/exp23_the_sheldonian_slam_part_0+.bag"
+source /catkin_ws/devel/setup.bash
 
 cd ../launch || exit
 

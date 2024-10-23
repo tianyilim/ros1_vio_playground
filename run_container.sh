@@ -24,7 +24,8 @@ docker run --interactive --tty \
     -v $XSOCK:$XSOCK \
     -v /etc/group:/etc/group:ro \
     --mount type=bind,source="$(pwd)/Datasets",target=/Datasets \
-    --mount type=bind,source="$(pwd)/code",target=/catkin_ws/src/code \
+    --mount type=bind,source="$(pwd)/code/hl_orbslam3_wrapper",target=/catkin_ws/src/hl_orbslam3_wrapper \
+    --mount type=bind,source="$(pwd)/code/orb_slam3_ros_wrapper",target=/catkin_ws/src/orb_slam3_ros_wrapper \
     --mount type=bind,source="$(pwd)/user",target=/user \
     --mount type=bind,source="/mnt/ssd_2T",target=/mnt/ssd_2T \
     --mount type=bind,source="/mnt/ssd_4T",target=/mnt/ssd_4T \

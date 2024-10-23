@@ -20,21 +20,23 @@ File.version: "1.0"
 Camera.type: "PinHole"
 
 # Images are assumed to be rectified
-# Camera calibration and distortion parameters (OpenCV) 
-Camera1.fx: 351.31400364193297
-Camera1.fy: 351.4911744656785
-Camera1.cx: 367.8522793375995
-Camera1.cy: 253.8402144980996
+# Camera calibration and distortion parameters (OpenCV)
+# This is alphasense/cam1 (on the left)
+Camera1.fx: 352.6489794433894
+Camera1.fy: 352.8586498571586
+Camera1.cx: 347.8170010310082
+Camera1.cy: 270.5806692485468
 
 Camera1.k1: 0.0
 Camera1.k2: 0.0
 Camera1.p1: 0.0
 Camera1.p2: 0.0
 
-Camera2.fx: 364.431
-Camera2.fy: 362.228
-Camera2.cx: 242.39
-Camera2.cy: 309.721
+# This is alphasense/cam0 (on the right)
+Camera2.fx: 351.31400364193297
+Camera2.fy: 351.4911744656785
+Camera2.cx: 367.8522793375995
+Camera2.cy: 253.8402144980996
 
 Camera2.k1: 0.0
 Camera2.k2: 0.0
@@ -52,27 +54,29 @@ Camera.RGB: 1 # HL images are grayscale it doesn't matter
 
 # Close/Far threshold. Baseline times.
 Stereo.ThDepth: 30.0
-# Transformation from alphasense/cam1 to alphasense/cam0
+# Transformation from alphasense/cam0 to alphasense/cam1
 Stereo.T_c1_c2: !!opencv-matrix
   rows: 4
   cols: 4
   dt: f
-  data: [ 9.99976143e-01, -4.70555294e-03,  5.05685718e-03, -1.08171900e-01,
-          4.69810926e-03,  9.99987864e-01,  1.48287047e-03, -1.02207120e-03,
-         -5.06377354e-03, -1.45907742e-03,  9.99986115e-01, -1.43436505e-04,
-          0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  1.00000000e+00] 
+  data: [ 9.99976143e-01,  4.69810926e-03, -5.06377354e-03,  1.08173395e-01,
+         -4.70555294e-03,  9.99987864e-01, -1.45907742e-03,  5.12840908e-04,
+          5.05685718e-03,  1.48287047e-03,  9.99986115e-01,  6.91959962e-04,
+          0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  1.00000000e+00]
 
-# Transformation from camera 0 to body-frame (imu)
+
+
+# Transformation from alphasense/cam1 to body-frame (imu)
 IMU.T_b_c1: !!opencv-matrix
   rows: 4
   cols: 4
   dt: f
-  data: [ 0.00670802,  0.00242564,  0.99997456,  0.05126355,
-          0.99992642,  0.0100912 , -0.00673218,  0.04539012,
-         -0.01010727,  0.99994614, -0.00235777, -0.01321491,
-          0.        ,  0.        ,  0.        ,  1.        ]
+  data: [ 1.65561265e-03,  9.35008954e-04,  9.99998192e-01,  5.03920182e-02,
+          9.99984064e-01,  5.39569062e-03, -1.66063428e-03, -6.27831670e-02,
+         -5.39723357e-03,  9.99985006e-01, -9.26060880e-04, -1.31432680e-02,
+          0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  1.00000000e+00]
 
-# IMU noise: Obtained from Mihai
+# IMU noise
 IMU.NoiseGyro: 0.019
 IMU.NoiseAcc: 0.019
 IMU.GyroWalk: 0.000266

@@ -1,11 +1,11 @@
 <!-- TODO this is not developed yet -->
 
 <launch>
-    <arg name="right_cam_topic" value="/alphasense/cam0/image_rect" />
     <arg name="left_cam_topic" value="/alphasense/cam1/image_rect" />
+    <arg name="right_cam_topic" value="/alphasense/cam0/image_rect" />
     <arg name="imu_topic" value="/alphasense/imu" />
 
-    <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/hilti22.yaml" />
+    <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/hilti22-orbslam.yaml" />
 
     <node name="orb_slam3_stereo_inertial" pkg="orb_slam3_ros_wrapper" type="orb_slam3_ros_wrapper_stereo_inertial" output="screen" ns="/">
         <!-- Input topics -->
@@ -19,7 +19,7 @@
 
         <!-- Parameters for ROS -->
         <param name="world_frame_id" type="string" value="world" />
-        <param name="cam_frame_id" type="string" value="cam0_sensor_frame" />
+        <param name="cam_frame_id" type="string" value="cam1_sensor_frame" />
         <param name="enable_pangolin" type="bool" value="true" />
 
         <!-- World frame orientation -->
@@ -35,7 +35,7 @@
     <node pkg="hector_trajectory_server" type="hector_trajectory_server"
         name="trajectory_server_orb_slam3" output="screen" ns="orb_slam3_ros">
         <param name="/target_frame_name" value="/world" />
-        <param name="/source_frame_name" value="/cam0_sensor_frame" />
+        <param name="/source_frame_name" value="/cam1_sensor_frame" />
         <param name="/trajectory_update_rate" value="15.0" />
         <param name="/trajectory_publish_rate" value="15.0" />
     </node>

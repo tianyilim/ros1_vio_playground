@@ -52,7 +52,9 @@ def rectify_image(img_msg: Image, cam_info: CameraInfo) -> Optional[Image]:
     return out_msg
 
 
-IN_BAG = "/mnt/ssd_2T/hilti-22/exp23_the_sheldonian_slam_part_0.bag"
+IN_BAGS = ["/mnt/ssd_2T/hilti-22/exp23_the_sheldonian_slam_part_0.bag",
+           "/mnt/ssd_2T/hilti-22/exp23_the_sheldonian_slam_part_1.bag",
+           "/mnt/ssd_2T/hilti-22/exp23_the_sheldonian_slam_part_2.bag"]
 OUT_BAG = "/mnt/ssd_2T/hilti-22/exp23_the_sheldonian_slam_part_0+.bag"
 
 T_cam0_imu = np.array([[0.006708021451800439, 0.9999264200621176, -0.01010727015365992, -0.04586422589354697],
@@ -142,64 +144,69 @@ Cam4_CamInfo.P = [351.5132148653381, 0.0, 342.8425988673232, 0.0,
 camera_infos = [Cam0_CamInfo, Cam1_CamInfo, Cam2_CamInfo, Cam3_CamInfo, Cam4_CamInfo]
 
 # Read all messages from the input bag
-inbag = rosbag.Bag(IN_BAG)
+inbags = [rosbag.Bag(BAG, "r") for BAG in IN_BAGS]
 outbag = rosbag.Bag(OUT_BAG, "w")
 
-TOTAL_MESSAGE_COUNT = -1
+# TOTAL_MESSAGE_COUNT = -1
 msgs_written = 0
 last_tf_written_timestamp = None
 
-print("Adding CameraInfo and TF messages to the bag...")
+
+print("Adding CameraInfo and TF messages to bags...")
 with outbag as outbag:
     topic: str
-    for topic, msg, t in tqdm(inbag.read_messages(), total=inbag.get_message_count()):
 
-        # Write Tf_static messages every 1 second
-        if last_tf_written_timestamp is None or (t - last_tf_written_timestamp).to_sec() > 1.0:
-            last_tf_written_timestamp = t
+    for bag_number, inbag in enumerate(inbags):
+        print(f"Processing bag {bag_number + 1}/{len(inbags)}")
 
-            # Add TF messages
-            tf_static_msg = TFMessage()
+        for topic, msg, t in tqdm(inbag.read_messages(), total=inbag.get_message_count()):
 
-            for i, T_cam_imu in enumerate(T_cams_imu):
-                T_imu_cam = np.linalg.inv(T_cam_imu)
-                tf_msg = TransformStamped()
-                tf_msg.header.stamp = last_tf_written_timestamp
-                tf_msg.header.frame_id = "imu_sensor_frame"
-                tf_msg.child_frame_id = f"cam{i}_sensor_frame"
+            # Write Tf_static messages every 1 second
+            if last_tf_written_timestamp is None or (t - last_tf_written_timestamp).to_sec() > 1.0:
+                last_tf_written_timestamp = t
 
-                tf_msg.transform.translation.x = T_imu_cam[0, 3]
-                tf_msg.transform.translation.y = T_imu_cam[1, 3]
-                tf_msg.transform.translation.z = T_imu_cam[2, 3]
+                # Add TF messages
+                tf_static_msg = TFMessage()
 
-                q = tf.transformations.quaternion_from_matrix(T_imu_cam)
-                tf_msg.transform.rotation.x = q[0]
-                tf_msg.transform.rotation.y = q[1]
-                tf_msg.transform.rotation.z = q[2]
-                tf_msg.transform.rotation.w = q[3]
+                for i, T_cam_imu in enumerate(T_cams_imu):
+                    T_imu_cam = np.linalg.inv(T_cam_imu)
+                    tf_msg = TransformStamped()
+                    tf_msg.header.stamp = last_tf_written_timestamp
+                    tf_msg.header.frame_id = "imu_sensor_frame"
+                    tf_msg.child_frame_id = f"cam{i}_sensor_frame"
 
-                tf_static_msg.transforms.append(tf_msg)
+                    tf_msg.transform.translation.x = T_imu_cam[0, 3]
+                    tf_msg.transform.translation.y = T_imu_cam[1, 3]
+                    tf_msg.transform.translation.z = T_imu_cam[2, 3]
 
-            outbag.write("/tf_static", tf_static_msg, last_tf_written_timestamp)
+                    q = tf.transformations.quaternion_from_matrix(T_imu_cam)
+                    tf_msg.transform.rotation.x = q[0]
+                    tf_msg.transform.rotation.y = q[1]
+                    tf_msg.transform.rotation.z = q[2]
+                    tf_msg.transform.rotation.w = q[3]
 
-        # Write all other messages except PC2
-        if topic == "/hesai/pandar":
-            continue
+                    tf_static_msg.transforms.append(tf_msg)
 
-        outbag.write(topic, msg, t)
+                outbag.write("/tf_static", tf_static_msg, last_tf_written_timestamp)
 
-        if topic.endswith("image_raw") and topic.startswith("/alphasense"):
-            cam_idx = int(topic.split("/")[2][-1])
+            # Write all other messages except PC2
+            if topic == "/hesai/pandar":
+                continue
 
-            cam_info = camera_infos[cam_idx]
-            cam_info.header = msg.header
-            outbag.write(f"/alphasense/cam{cam_idx}/camera_info", cam_info, t)
+            outbag.write(topic, msg, t)
 
-            rectified_image = rectify_image(msg, cam_info)
-            if rectified_image is not None:
-                outbag.write(f"/alphasense/cam{cam_idx}/image_rect", rectified_image, t)
+            if topic.endswith("image_raw") and topic.startswith("/alphasense"):
+                cam_idx = int(topic.split("/")[2][-1])
 
-            if cam_idx == 0:
-                msgs_written += 1
-                if TOTAL_MESSAGE_COUNT > 0 and msgs_written >= TOTAL_MESSAGE_COUNT:
-                    break
+                cam_info = camera_infos[cam_idx]
+                cam_info.header = msg.header
+                outbag.write(f"/alphasense/cam{cam_idx}/camera_info", cam_info, t)
+
+                rectified_image = rectify_image(msg, cam_info)
+                if rectified_image is not None:
+                    outbag.write(f"/alphasense/cam{cam_idx}/image_rect", rectified_image, t)
+
+                # if cam_idx == 0:
+                #     msgs_written += 1
+                #     if TOTAL_MESSAGE_COUNT > 0 and msgs_written >= TOTAL_MESSAGE_COUNT:
+                #         break

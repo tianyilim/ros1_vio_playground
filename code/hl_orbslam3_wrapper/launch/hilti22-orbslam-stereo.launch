@@ -1,0 +1,49 @@
+<!-- TODO this is not developed yet -->
+
+<launch>
+    <arg name="cam_topic" value="/alphasense/cam0/image_rect" />
+    <arg name="imu_topic" value="/alphasense/imu" />
+
+    <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/hilti22.yaml" />
+    <!-- <arg name="rviz_filepath" value="$(find hl_orbslam3_wrapper)/viz/hololens_viz.rviz" /> -->
+
+    <node name="orb_slam3" pkg="orb_slam3_ros_wrapper" type="orb_slam3_ros_wrapper_mono_inertial" output="screen" ns="/">
+        <!-- Input topics -->
+        <remap from="/camera/image_raw" to="$(arg cam_topic)" />
+        <remap from="/imu" to="$(arg imu_topic)" />
+
+        <!-- Parameters for original ORB-SLAM3 -->
+        <param name="voc_file" type="string" value="$(find orb_slam3_ros_wrapper)/config/ORBvoc.txt" />
+        <param name="settings_file" type="string" value="$(arg settings_filepath)" />
+
+        <!-- Parameters for ROS -->
+        <param name="world_frame_id" type="string" value="world" />
+        <param name="cam_frame_id" type="string" value="camera" />
+        <param name="enable_pangolin" type="bool" value="true" />
+
+        <!-- World frame orientation -->
+        <param name="world_roll" type="double" value="0.0" />
+        <param name="world_pitch" type="double" value="1.57079632679" />
+        <param name="world_yaw" type="double" value="0.0" />
+    </node>
+
+    <!-- Visualization - RViz. -->
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_filepath)" output="screen" /> -->
+
+    <!-- Purely for visualization -->
+    <node pkg="hector_trajectory_server" type="hector_trajectory_server"
+        name="trajectory_server_orb_slam3" output="screen" ns="orb_slam3_ros">
+        <param name="/target_frame_name" value="/world" />
+        <param name="/source_frame_name" value="/camera" />
+        <param name="/trajectory_update_rate" value="15.0" />
+        <param name="/trajectory_publish_rate" value="15.0" />
+    </node>
+
+    <!-- Image Rectification -->
+    <!-- <node pkg="nodelet" type="nodelet" name="image_rect" ns="/alphasense/cam0" output="screen"
+        args="standalone image_proc/rectify standalone_nodelet">
+        <remap from="image_mono" to="image_raw" />
+        <param name="interpolation" type="int" value="2" />
+    </node> -->
+
+</launch>

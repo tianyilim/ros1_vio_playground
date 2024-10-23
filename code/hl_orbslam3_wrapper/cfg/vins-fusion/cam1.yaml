@@ -1,6 +1,6 @@
-# This is alphasense/cam1. It is the LEFT camera, so it's confusingly assigned to cam0 in the VINS-Fusion config.
 %YAML:1.0
 ---
+# This is alphasense/cam1. It is the LEFT camera, so it's confusingly assigned to cam0 in the VINS-Fusion config.
 model_type: PINHOLE
 camera_name: camera
 image_width: 720

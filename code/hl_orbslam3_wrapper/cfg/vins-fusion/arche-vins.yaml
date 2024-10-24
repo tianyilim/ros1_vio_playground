@@ -1,0 +1,59 @@
+%YAML:1.0
+
+#common parameters
+#support: 1 imu 1 cam; 1 imu 2 cam: 2 cam; 
+imu: 1
+num_of_cam: 1
+
+imu_topic: "/imu"
+image0_topic: "/cam_phone/image_rect"
+output_path: "/user/vins-mono/output/"
+
+cam0_calib: "arche-cam.yaml"
+image_width: 1440
+image_height: 1920
+
+# Extrinsic parameter between IMU and Camera.
+estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
+                        # 1  Have an initial guess about extrinsic parameters. We will optimize around your initial guess.
+
+body_T_cam0: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data: [ 9.99666910e-01  2.25504906e-02  1.25516756e-02  8.71445480e-02,
+           2.25413740e-02 -9.99745535e-01  8.67342627e-04  1.79712426e-01,
+           1.25680406e-02 -5.84121711e-04 -9.99920848e-01 -2.23317512e-01,
+           0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00,]
+
+#Multiple thread support
+multiple_thread: 1
+
+#feature tracker parameters
+max_cnt: 1000           # max feature number in feature tracking
+min_dist: 30            # min distance between two features 
+freq: 0                 # frequency (Hz) of publish tracking result. At least 10Hz for good estimation. If set 0, the frequence will be same as raw image 
+F_threshold: 1.0        # ransac threshold (pixel)
+show_track: 1           # publish tracking image as topic
+flow_back: 1            # perform forward and backward optical flow to improve feature tracking accuracy
+
+#optimization parameters
+max_solver_time: 0.1    # max solver itration time (ms), to guarantee real time
+max_num_iterations: 8   # max solver itrations, to guarantee real time
+keyframe_parallax: 10.0 # keyframe selection threshold (pixel)
+
+#imu parameters     The more accurate parameters you provide, the better performance
+acc_n: 0.04         # accelerometer measurement noise standard deviation. 
+gyr_n: 0.04         # gyroscope measurement noise standard deviation.     
+acc_w: 0.04         # accelerometer bias random walk noise standard deviation.  
+gyr_w: 0.001        # gyroscope bias random walk noise standard deviation.     
+g_norm: 9.81007     # gravity magnitude
+
+#unsynchronization parameters
+estimate_td: 0      # online estimate time offset between camera and imu
+td: -0.01379        # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+
+#loop closure parameters
+load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'
+pose_graph_save_path: /user/vins-mono/output/pose_graph/" # save and load path
+save_image: 1                   # save image in pose graph for visualization prupose; you can close this function by setting 0 

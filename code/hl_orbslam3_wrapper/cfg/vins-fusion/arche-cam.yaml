@@ -1,15 +1,12 @@
 %YAML:1.0
 ---
 
+# Downsampled from what's in Kalibr
+
 model_type: PINHOLE
 camera_name: camera
-image_width: 1440
-image_height: 1920
-# distortion_parameters:
-#    k1: 0.12914369423430547
-#    k2: -0.2785730538361766
-#    p1: -0.0005756032762904061
-#    p2: -0.00020078347500366342
+image_width: 480
+image_height: 640
 distortion_parameters:
    k1: 0.0
    k2: 0.0
@@ -17,10 +14,7 @@ distortion_parameters:
    p2: 0.0
 
 projection_parameters:
-   fx: 1580.7957555717492
-   fy: 1579.907853950917
-   cx: 724.6688881514142
-   cy: 943.7882673685945
-
-
-
+   fx: 526.931918524
+   fy: 526.635951317
+   cx: 241.55629605
+   cy: 314.596089123

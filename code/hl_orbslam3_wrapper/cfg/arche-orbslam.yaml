@@ -20,18 +20,18 @@ File.version: "1.0"
 Camera.type: "PinHole"
 
 # Images are assumed to be rectified
-Camera1.fx: 1580.7957555717492
-Camera1.fy: 1579.907853950917
-Camera1.cx: 724.6688881514142
-Camera1.cy: 943.7882673685945
+Camera1.fx: 530.5195219080138
+Camera1.fy: 530.2002476156232
+Camera1.cx: 241.65217015254686
+Camera1.cy: 316.778297108977
 
-Camera1.k1: 0.0
-Camera1.k2: 0.0
-Camera1.p1: 0.0
-Camera1.p2: 0.0
+Camera1.k1: 0.13787883156419758
+Camera1.k2: -0.301726741613118
+Camera1.p1: -1.0072794898777892e-05
+Camera1.p2: 1.9468592209496127e-05
 
-Camera.width: 1440
-Camera.height: 1920
+Camera.width: 480
+Camera.height: 640
 
 # Camera frames per second 
 Camera.fps: 5
@@ -47,16 +47,16 @@ IMU.T_b_c1: !!opencv-matrix
   rows: 4
   cols: 4
   dt: f
-  data: [ 0.9999527 , -0.00743183,  0.00627366,  0.04417338,
-         -0.00754827, -0.99979582,  0.01874428,  0.06125199,
-          0.00613307, -0.01879075, -0.99980463,  0.01949127,
+  data: [ 0.99997439, -0.00476554,  0.0053396 ,  0.04906446,
+         -0.00483297, -0.99990782,  0.01268801,  0.06243268,
+          0.00527864, -0.01271349, -0.99990525,  0.03065218,
           0.        ,  0.        ,  0.        ,  1.        ]
 
 # IMU noise
-IMU.NoiseAcc: 0.02
-IMU.NoiseGyro: 0.02
-IMU.AccWalk: 0.002
-IMU.GyroWalk: 4.0e-5
+IMU.NoiseAcc: 0.04
+IMU.NoiseGyro: 0.04
+IMU.AccWalk: 0.004
+IMU.GyroWalk: 8.0e-5
 IMU.Frequency: 100.0
 IMU.InsertKFsWhenLost: 0  # integer: 0 or 1; seemed to crash when activated
 

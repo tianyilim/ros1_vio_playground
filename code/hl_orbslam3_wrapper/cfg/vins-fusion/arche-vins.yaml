@@ -21,9 +21,9 @@ body_T_cam0: !!opencv-matrix
    rows: 4
    cols: 4
    dt: d
-   data: [ 0.9999527 , -0.00743183,  0.00627366,  0.04417338,
-          -0.00754827, -0.99979582,  0.01874428,  0.06125199,
-           0.00613307, -0.01879075, -0.99980463,  0.01949127,
+   data: [ 0.99997439, -0.00476554,  0.0053396 ,  0.04906446,
+          -0.00483297, -0.99990782,  0.01268801,  0.06243268,
+           0.00527864, -0.01271349, -0.99990525,  0.03065218,
            0.        ,  0.        ,  0.        ,  1.        ]
 
 #Multiple thread support
@@ -50,8 +50,8 @@ gyr_w: 8.0e-5       # gyroscope bias random walk noise standard deviation.
 g_norm: 9.81007     # gravity magnitude
 
 #unsynchronization parameters
-estimate_td: 0      # online estimate time offset between camera and imu
-td: 0.007220895187  # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+estimate_td: 0            # online estimate time offset between camera and imu
+td: 0.006661191008721174  # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
 
 #loop closure parameters
 load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'

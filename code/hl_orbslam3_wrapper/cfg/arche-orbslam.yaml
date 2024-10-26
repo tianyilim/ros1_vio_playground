@@ -20,10 +20,10 @@ File.version: "1.0"
 Camera.type: "PinHole"
 
 # Images are assumed to be rectified
-Camera1.fx: 1610.962087877543
-Camera1.fy: 1606.3619897101244
-Camera1.cx: 728.4654316724669
-Camera1.cy: 960.5441601063796
+Camera1.fx: 1580.7957555717492
+Camera1.fy: 1579.907853950917
+Camera1.cx: 724.6688881514142
+Camera1.cy: 943.7882673685945
 
 Camera1.k1: 0.0
 Camera1.k2: 0.0
@@ -34,7 +34,7 @@ Camera.width: 1440
 Camera.height: 1920
 
 # Camera frames per second 
-Camera.fps: 5.0
+Camera.fps: 5
 
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1
@@ -42,21 +42,21 @@ Camera.RGB: 1
 # Close/Far threshold. Baseline times.
 Stereo.ThDepth: 30.0
 
-# Transformation from alphasense/cam1 to body-frame (imu)
+# Transformation from cam to imu
 IMU.T_b_c1: !!opencv-matrix
   rows: 4
   cols: 4
   dt: f
-  data: [ 9.99666910e-01,  2.25504906e-02,  1.25516756e-02,  8.71445480e-02,
-          2.25413740e-02, -9.99745535e-01,  8.67342627e-04,  1.79712426e-01,
-          1.25680406e-02, -5.84121711e-04, -9.99920848e-01, -2.23317512e-01,
-          0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  1.00000000e+00]
+  data: [ 0.9999527 , -0.00743183,  0.00627366,  0.04417338,
+         -0.00754827, -0.99979582,  0.01874428,  0.06125199,
+          0.00613307, -0.01879075, -0.99980463,  0.01949127,
+          0.        ,  0.        ,  0.        ,  1.        ]
 
 # IMU noise
-IMU.NoiseGyro: 0.04
-IMU.NoiseAcc: 0.04
-IMU.GyroWalk: 0.04
-IMU.AccWalk: 0.001
+IMU.NoiseAcc: 0.02
+IMU.NoiseGyro: 0.02
+IMU.AccWalk: 0.002
+IMU.GyroWalk: 4.0e-5
 IMU.Frequency: 100.0
 IMU.InsertKFsWhenLost: 0  # integer: 0 or 1; seemed to crash when activated
 

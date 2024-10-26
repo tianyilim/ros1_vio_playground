@@ -5,6 +5,9 @@
     <arg name="config_path"
         default="$(find hl_orbslam3_wrapper)/cfg/vins-fusion/arche-vins.yaml" />
 
+    <!-- Always use sim time -->
+    <param name="use_sim_time" value="true" />
+
     <!-- Downsample and crop image -->
     <node pkg="nodelet" type="nodelet" name="image_crop_decimate"
         args="standalone image_proc/crop_decimate standalone_nodelet">

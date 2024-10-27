@@ -70,29 +70,9 @@ ENV LANG en_US.UTF-8
 # Setup catkin ws
 RUN mkdir -p /catkin_ws/src /catkin_ws/build /catkin_ws/devel /catkin_ws/install
 
-# Setup orbslam. This particular fork has a fix for Segfault on KITTI.
-WORKDIR /
-RUN git clone https://github.com/Muhammad0312/ORB_SLAM3.git && cd ORB_SLAM3 && \
-    cd Vocabulary && tar -xvf ORBvoc.txt.tar.gz && cd .. && \
-    ./build.sh
-
-# Setup VINS-Fusion
-WORKDIR /catkin_ws/src
-RUN git clone https://github.com/tianyilim/VINS-Fusion.git
-
-# Setup OpenVINS
-WORKDIR /catkin_ws/src
-RUN git clone https://github.com/rpng/open_vins/
-
-# Ensure all ROS dependencies are installed
-RUN rm -rf /etc/ros/rosdep/sources.list.d/20-default.list && \
-    sudo rosdep init && \
-    rosdep update && \
-    rosdep install --from-paths /catkin_ws/src --ignore-src -r -y
-
-# Build the catkin workspace, sourcing in `sh` syntax
-WORKDIR /catkin_ws
-RUN . /opt/ros/noetic/setup.sh && catkin build
+# Setup OpenVINS (not used in this project, just for reference)
+# WORKDIR /catkin_ws/src
+# RUN git clone https://github.com/rpng/open_vins/
 
 # TUI helpers and config files
 COPY docker_build_utils/bashrc /root/.bashrc

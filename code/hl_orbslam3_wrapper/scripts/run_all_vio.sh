@@ -22,13 +22,13 @@ for capture in "${CAPTURES[@]}"; do
 
     rm -f /user/orbslam3_traj.tum
     roslaunch arche-orbslam-mono.launch rosbag_path:=$ROSBAG_PATH viz:=False
-    mv /user/orbslam3_traj.tum /user/orbslam3-$capture.tum
+    mv /user/orbslam3_traj.tum /user/orbslam3-"$capture".tum
     mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-"$capture"_memUsageKB.txt
     mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-"$capture"_timing.txt
 
     roslaunch arche-vins-mono.launch rosbag_path:=$ROSBAG_PATH viz:=False
-    mv /user/vins-mono/output/vio.csv /user/vins_mono.tum
-    mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/orbslam3-"$capture"_memUsageKB.txt
-    mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/orbslam3-"$capture"_timing.txt
+    mv /user/vins-mono/output/vio.csv /user/vins-mono-"$capture".tum
+    mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-mono-"$capture"_memUsageKB.txt
+    mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-mono-"$capture"_timing.txt
 
 done

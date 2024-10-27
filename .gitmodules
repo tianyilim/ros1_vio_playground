@@ -1,3 +1,9 @@
 [submodule "code/orb_slam3_ros_wrapper"]
 	path = code/orb_slam3_ros_wrapper
 	url = git@github.com:tianyilim/orb_slam3_ros_wrapper.git
+[submodule "code/VINS-Fusion"]
+	path = code/VINS-Fusion
+	url = https://github.com/tianyilim/VINS-Fusion
+[submodule "code/ORB_SLAM3"]
+	path = code/ORB_SLAM3
+	url = https://github.com/tianyilim/ORB_SLAM3

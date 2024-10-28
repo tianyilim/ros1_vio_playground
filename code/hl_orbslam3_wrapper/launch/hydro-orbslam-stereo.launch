@@ -4,7 +4,7 @@
 
     <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/hydro-orbslam.yaml" />
 
-    <arg name="rosbag_path" default="" />
+    <arg name="rosbag_path" default="/mnt/ssd_2T/tianyi_data/lspgo-cvpr/spot-hydro-10-53-clean.bag" />
     <arg name="viz" default="false" />
 
     <!-- Always use sim time -->
@@ -46,7 +46,7 @@
     <!-- Play rosbag -->
     <group if="$(eval arg('rosbag_path') != '')">
         <node pkg="rosbag" type="play" name="rosbag_player"
-            args="--clock $(arg rosbag_path) --delay 5" required="True" />
+            args="--clock $(arg rosbag_path) --delay 3 --start 15" required="True" />
     </group>
 
 </launch>

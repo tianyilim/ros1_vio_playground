@@ -1,0 +1,54 @@
+<launch>
+    <arg name="left_cam_topic" value="/spot/camera/frontleft/image" />
+    <arg name="right_cam_topic" value="/spot/camera/frontright/image" />
+    <arg name="imu_topic" value="/imu" />
+
+    <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/hydro-orbslam.yaml" />
+
+    <arg name="rosbag_path" default="" />
+    <arg name="viz" default="false" />
+
+    <!-- Always use sim time -->
+    <param name="use_sim_time" value="true" />
+
+    <node name="orb_slam3_spot_stereo_imu" pkg="orb_slam3_ros_wrapper" required="True"
+        type="orb_slam3_ros_wrapper_stereo_inertial" output="screen" ns="/">
+        <!-- Input topics -->
+        <remap from="/camera/left/image_raw" to="$(arg left_cam_topic)" />
+        <remap from="/camera/right/image_raw" to="$(arg right_cam_topic)" />
+        <remap from="/imu" to="$(arg imu_topic)" />
+
+        <!-- Parameters for original ORB-SLAM3 -->
+        <param name="voc_file" type="string" value="$(find orb_slam3_ros_wrapper)/config/ORBvoc.txt" />
+        <param name="settings_file" type="string" value="$(arg settings_filepath)" />
+
+        <!-- Parameters for ROS -->
+        <param name="world_frame_id" type="string" value="world" />
+        <param name="cam_frame_id" type="string" value="cam1_orbslam" />
+        <param name="enable_pangolin" type="bool" value="$(arg viz)" />
+        <param name="traj_save_file" type="string" value="/user/orbslam3_traj.tum" />
+
+        <!-- World frame orientation -->
+        <param name="world_roll" type="double" value="0.0" />
+        <param name="world_pitch" type="double" value="1.57079632679" />
+        <param name="world_yaw" type="double" value="0.0" />
+    </node>
+
+    <!-- Purely for visualization -->
+    <group if="$(arg viz)">
+        <node pkg="hector_trajectory_server" type="hector_trajectory_server"
+            name="trajectory_server_orb_slam3" output="screen" ns="/orb_slam3_ros">
+            <param name="/target_frame_name" value="/world" />
+            <param name="/source_frame_name" value="/cam1_orbslam" />
+            <param name="/trajectory_update_rate" value="15.0" />
+            <param name="/trajectory_publish_rate" value="15.0" />
+        </node>
+    </group>
+
+    <!-- Play rosbag -->
+    <group if="$(eval arg('rosbag_path') != '')">
+        <node pkg="rosbag" type="play" name="rosbag_player"
+            args="--clock $(arg rosbag_path) --delay 5" required="True" />
+    </group>
+
+</launch>

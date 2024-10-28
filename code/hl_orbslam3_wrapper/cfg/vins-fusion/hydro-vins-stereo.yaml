@@ -8,7 +8,7 @@ num_of_cam: 2
 imu_topic: "/imu"
 image0_topic: "/spot/camera/frontleft/image"
 image1_topic: "/spot/camera/frontright/image"
-output_path: "/user/vins-mono/output/"
+output_path: "/user/vins-stereo/output/"
 
 cam0_calib: "hydro-cam0.yaml"
 cam1_calib: "hydro-cam1.yaml"

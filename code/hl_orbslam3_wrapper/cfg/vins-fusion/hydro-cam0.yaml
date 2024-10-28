@@ -1,0 +1,17 @@
+%YAML:1.0
+---
+# This is /spot/camera/frontleft/image.
+model_type: PINHOLE
+camera_name: camera
+image_width: 480
+image_height: 640
+distortion_parameters:
+   k1: 0.0
+   k2: 0.0
+   p1: 0.0
+   p2: 0.0
+projection_parameters:
+   fx: 257.47900390625
+   fy: 256.8888854980469
+   cx: 324.6042175292969
+   cy: 250.34426879882812

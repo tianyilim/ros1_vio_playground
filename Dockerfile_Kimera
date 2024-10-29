@@ -6,7 +6,7 @@ RUN apt-get update
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y \
     gnupg2 curl lsb-core vim wget python3-pip libpng16-16 libjpeg-turbo8 libtiff5 \
-    tmux ranger magic htop build-essential git cmake unzip pkg-config autoconf \
+    tmux ranger magic htop build-essential git cmake unzip pkg-config autoconf xvfb \
     python3-dev \
     # ROS dependencies
     python3-catkin-tools python3-osrf-pycommon \
@@ -40,6 +40,8 @@ RUN cd /tmp && git clone https://github.com/stevenlovegrove/Pangolin && \
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-std=c++11 .. && \
     make -j8 && make install && \
     cd / && rm -rf /tmp/Pangolin
+# Ensure Pangolin library can be found
+RUN cp /usr/local/lib/libpangolin.so /usr/lib
 
 ENV ROS_DISTRO noetic
 ENV LANG en_US.UTF-8

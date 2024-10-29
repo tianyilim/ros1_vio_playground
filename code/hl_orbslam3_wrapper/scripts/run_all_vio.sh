@@ -46,8 +46,6 @@ for capture in "${CAPTURES[@]}"; do
     mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/HYDROMono/mem_usage.txt /user/kimera-mono-"$capture"_memUsageKB.txt
 done
 
-exit 0
-
 # Run for ARCHE
 ROSBAG_ROOT="/mnt/ssd_4T/tianyi_data/arche-long-indiv-bags"
 CAPTURES=(
@@ -64,16 +62,16 @@ for capture in "${CAPTURES[@]}"; do
     ls "$ROSBAG_ROOT/$capture"
     ROSBAG_PATH="$ROSBAG_ROOT/$capture"
 
-    rm -f /user/orbslam3_traj.tum
-    roslaunch arche-orbslam-mono.launch rosbag_path:=$ROSBAG_PATH viz:=False
-    mv /user/orbslam3_traj.tum /user/orbslam3-"$capture".tum
-    mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-"$capture"_memUsageKB.txt
-    mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-"$capture"_timing.txt
+    # rm -f /user/orbslam3_traj.tum
+    # roslaunch arche-orbslam-mono.launch rosbag_path:=$ROSBAG_PATH viz:=False
+    # mv /user/orbslam3_traj.tum /user/orbslam3-"$capture".tum
+    # mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-"$capture"_memUsageKB.txt
+    # mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-"$capture"_timing.txt
 
-    roslaunch arche-vins-mono.launch rosbag_path:=$ROSBAG_PATH viz:=False
-    mv /user/vins-mono/output/vio.csv /user/vins-mono-"$capture".tum
-    mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-mono-"$capture"_memUsageKB.txt
-    mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-mono-"$capture"_timing.txt
+    # roslaunch arche-vins-mono.launch rosbag_path:=$ROSBAG_PATH viz:=False
+    # mv /user/vins-mono/output/vio.csv /user/vins-mono-"$capture".tum
+    # mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-mono-"$capture"_memUsageKB.txt
+    # mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-mono-"$capture"_timing.txt
 
     roslaunch arche-kimera-mono.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/ARCHE/traj_pgo.csv /user/kimera-mono-"$capture".txt
@@ -90,25 +88,25 @@ CAPTURES=(
 for capture in "${CAPTURES[@]}"; do
     echo "Processing capture: $capture"
 
-    roslaunch hilti22-orbslam-mono.launch viz:=False
-    mv /user/orbslam3_traj.tum /user/orbslam3-mono-"$capture".tum
-    mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-mono-"$capture"_memUsageKB.txt
-    mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-mono-"$capture"_timing.txt
+    # roslaunch hilti22-orbslam-mono.launch viz:=False
+    # mv /user/orbslam3_traj.tum /user/orbslam3-mono-"$capture".tum
+    # mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-mono-"$capture"_memUsageKB.txt
+    # mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-mono-"$capture"_timing.txt
 
-    roslaunch hilti22-orbslam-stereo.launch viz:=False
-    mv /user/orbslam3_traj.tum /user/orbslam3-stereo-"$capture".tum
-    mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-stereo-"$capture"_memUsageKB.txt
-    mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-stereo-"$capture"_timing.txt
+    # roslaunch hilti22-orbslam-stereo.launch viz:=False
+    # mv /user/orbslam3_traj.tum /user/orbslam3-stereo-"$capture".tum
+    # mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-stereo-"$capture"_memUsageKB.txt
+    # mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-stereo-"$capture"_timing.txt
 
-    roslaunch hilti22-vins-mono.launch viz:=False
-    mv /user/vins-mono/output/vio.csv /user/vins-mono-"$capture".tum
-    mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-mono-"$capture"_memUsageKB.txt
-    mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-mono-"$capture"_timing.txt
+    # roslaunch hilti22-vins-mono.launch viz:=False
+    # mv /user/vins-mono/output/vio.csv /user/vins-mono-"$capture".tum
+    # mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-mono-"$capture"_memUsageKB.txt
+    # mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-mono-"$capture"_timing.txt
 
-    roslaunch hilti22-vins-stereo.launch viz:=False
-    mv /user/vins-stereo/output/vio.csv /user/vins-stereo-"$capture".tum
-    mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-stereo-"$capture"_memUsageKB.txt
-    mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-stereo-"$capture"_timing.txt
+    # roslaunch hilti22-vins-stereo.launch viz:=False
+    # mv /user/vins-stereo/output/vio.csv /user/vins-stereo-"$capture".tum
+    # mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-stereo-"$capture"_memUsageKB.txt
+    # mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-stereo-"$capture"_timing.txt
 
     roslaunch hilti22-kimera-stereo.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/HILTI/traj_pgo.csv /user/kimera-stereo-"$capture".txt

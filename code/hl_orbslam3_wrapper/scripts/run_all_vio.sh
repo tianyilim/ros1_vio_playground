@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Source, ensure we are in the right directory
 source /catkin_ws/devel/setup.bash
 cd ../launch || exit
@@ -13,40 +15,38 @@ CAPTURES=(
 for capture in "${CAPTURES[@]}"; do
     echo "Processing capture: $capture"
 
-    roslaunch hydro-orbslam-mono.launch viz:=False
-    mv /user/orbslam3_traj.tum /user/orbslam3-mono-"$capture".tum
-    mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-mono-"$capture"_memUsageKB.txt
-    mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-mono-"$capture"_timing.txt
+    # roslaunch hydro-orbslam-mono.launch viz:=False
+    # mv /user/orbslam3_traj.tum /user/orbslam3-mono-"$capture".tum
+    # mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-mono-"$capture"_memUsageKB.txt
+    # mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-mono-"$capture"_timing.txt
 
-    roslaunch hydro-orbslam-stereo.launch viz:=False
-    mv /user/orbslam3_traj.tum /user/orbslam3-stereo-"$capture".tum
-    mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-stereo-"$capture"_memUsageKB.txt
-    mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-stereo-"$capture"_timing.txt
+    # roslaunch hydro-orbslam-stereo.launch viz:=False
+    # mv /user/orbslam3_traj.tum /user/orbslam3-stereo-"$capture".tum
+    # mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-stereo-"$capture"_memUsageKB.txt
+    # mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-stereo-"$capture"_timing.txt
 
-    roslaunch hydro-vins-mono.launch viz:=False
-    mv /user/vins-mono/output/vio.csv /user/vins-mono-"$capture".tum
-    mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-mono-"$capture"_memUsageKB.txt
-    mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-mono-"$capture"_timing.txt
+    # roslaunch hydro-vins-mono.launch viz:=False
+    # mv /user/vins-mono/output/vio.csv /user/vins-mono-"$capture".tum
+    # mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-mono-"$capture"_memUsageKB.txt
+    # mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-mono-"$capture"_timing.txt
 
-    roslaunch hydro-vins-stereo.launch viz:=False
-    mv /user/vins-stereo/output/vio.csv /user/vins-stereo-"$capture".tum
-    mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-stereo-"$capture"_memUsageKB.txt
-    mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-stereo-"$capture"_timing.txt
-
+    # roslaunch hydro-vins-stereo.launch viz:=False
+    # mv /user/vins-stereo/output/vio.csv /user/vins-stereo-"$capture".tum
+    # mv ~/.ros/VINS_KeyframeMemUsageKB.txt /user/vins-stereo-"$capture"_memUsageKB.txt
+    # mv ~/.ros/VINS_KeyframeTrackTiming.txt /user/vins-stereo-"$capture"_timing.txt
+    
     roslaunch hydro-kimera-stereo.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/HYDRO/traj_pgo.csv /user/kimera-stereo-"$capture".txt
+    python3 ../scripts/process_quats.py /user/kimera-stereo-"$capture".txt /user/kimera-stereo-"$capture".tum
     mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/HYDRO/mem_usage.txt /user/kimera-stereo-"$capture"_memUsageKB.txt
-    
+
     roslaunch hydro-kimera-mono.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/HYDROMono/traj_pgo.csv /user/kimera-mono-"$capture".txt
-    python ../scripts/process_quats.py /user/kimera-mono-"$capture".txt /user/kimera-mono-"$capture".tum
+    python3 ../scripts/process_quats.py /user/kimera-mono-"$capture".txt /user/kimera-mono-"$capture".tum
     mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/HYDROMono/mem_usage.txt /user/kimera-mono-"$capture"_memUsageKB.txt
-    
-    roslaunch hydro-kimera-stereo.launch rosbag:="$ROSBAG_ROOT/$capture"
-    mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/HYDRO/traj_pgo.csv /user/kimera-stereo-"$capture".txt
-    python ../scripts/process_quats.py /user/kimera-stereo-"$capture".txt /user/kimera-stereo-"$capture".tum
-    mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/HYDRO/mem_usage.txt /user/kimera-stereo-"$capture"_memUsageKB.txt
 done
+
+exit 0
 
 # Run for ARCHE
 ROSBAG_ROOT="/mnt/ssd_4T/tianyi_data/arche-long-indiv-bags"
@@ -77,7 +77,7 @@ for capture in "${CAPTURES[@]}"; do
 
     roslaunch arche-kimera-mono.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/ARCHE/traj_pgo.csv /user/kimera-mono-"$capture".txt
-    python ../scripts/process_quats.py /user/kimera-mono-"$capture".txt /user/kimera-mono-"$capture".tum
+    python3 ../scripts/process_quats.py /user/kimera-mono-"$capture".txt /user/kimera-mono-"$capture".tum
     mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/ARCHE/mem_usage.txt /user/kimera-mono-"$capture"_memUsageKB.txt
 done
 
@@ -112,11 +112,11 @@ for capture in "${CAPTURES[@]}"; do
 
     roslaunch hilti22-kimera-stereo.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/HILTI/traj_pgo.csv /user/kimera-stereo-"$capture".txt
-    python ../scripts/process_quats.py /user/kimera-stereo-"$capture".txt /user/kimera-stereo-"$capture".tum
+    python3 ../scripts/process_quats.py /user/kimera-stereo-"$capture".txt /user/kimera-stereo-"$capture".tum
     mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/HILTI/mem_usage.txt /user/kimera-stereo-"$capture"_memUsageKB.txt
     
     roslaunch hilti22-kimera-mono.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/HILTIMono/traj_pgo.csv /user/kimera-mono-"$capture".txt
-    python ../scripts/process_quats.py /user/kimera-mono-"$capture".txt /user/kimera-mono-"$capture".tum
+    python3 ../scripts/process_quats.py /user/kimera-mono-"$capture".txt /user/kimera-mono-"$capture".tum
     mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/HILTIMono/mem_usage.txt /user/kimera-mono-"$capture"_memUsageKB.txt
 done

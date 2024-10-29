@@ -12,8 +12,8 @@ output_path: "/user/vins-stereo/output/"
 
 cam0_calib: "hydro-cam0.yaml"
 cam1_calib: "hydro-cam1.yaml"
-image_width: 480
-image_height: 640
+image_width: 640
+image_height: 480
 
 # Extrinsic parameter between IMU and Camera.
 estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.

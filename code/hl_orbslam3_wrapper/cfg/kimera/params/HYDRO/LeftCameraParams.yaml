@@ -13,7 +13,7 @@ T_BS:
 
 # Camera specific definitions.
 rate_hz: 15
-resolution: [480, 640]
+resolution: [640, 480]
 camera_model: pinhole
 intrinsics: [257.47900390625, 256.8888854980469, 324.6042175292969, 250.34426879882812] #fu, fv, cu, cv
 distortion_model: radial-tangential

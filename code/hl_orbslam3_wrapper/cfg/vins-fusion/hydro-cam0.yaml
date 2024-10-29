@@ -3,8 +3,8 @@
 # This is /spot/camera/frontleft/image.
 model_type: PINHOLE
 camera_name: camera
-image_width: 480
-image_height: 640
+image_width: 640
+image_height: 480
 distortion_parameters:
    k1: 0.0
    k2: 0.0

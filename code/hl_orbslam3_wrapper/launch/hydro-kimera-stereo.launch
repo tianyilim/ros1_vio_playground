@@ -25,7 +25,8 @@
     <arg name="rosbag_path" default="" unless="$(arg online)"/>
     <!-- TODO Play rosbag -->
     <group if="$(eval arg('rosbag') != '')">
-      <node pkg="rosbag" type="play" name="rosbag_player" args="--clock $(arg rosbag) --delay 5" required="True" />
+      <node pkg="rosbag" type="play" name="rosbag_player"
+      args="--clock $(arg rosbag) --delay 5 --start 15" required="True" />
     </group>
   
     <!-- Frame IDs -->

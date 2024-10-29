@@ -9,7 +9,7 @@
     <!-- Set use_sim_time to true if you use rosbag with clock argument -->
     <param name="use_sim_time" value="true"/>
     <!-- Set log_output to true and KimeraVIO will log output of all modules to the log_output_path location. -->
-    <arg name="log_output" default="false"/>
+    <arg name="log_output" default="true"/>
     <arg name="log_output_path" default="$(find kimera_vio_ros)/output_logs/$(arg dataset_name)" if="$(arg log_output)"/>
     <!-- Set to true and specify gt_topic if you want to log ground-truth data -->
     <arg name="log_gt_data" default="false"/>
@@ -18,6 +18,8 @@
     <arg name="use_lcd"           default="true"/>
     <arg name="use_external_odom" default="false"/>
     <arg name="visualize"         default="true"/>
+    <!-- Type of visualization: 0: 2d3d_mesh, 1: pointcloud, 2: none -->
+    <arg name="viz_type"         default="1"/>
   
     <!-- Change rosbag path if online argument is false -->
     <arg name="rosbag_path" default="" unless="$(arg online)"/>
@@ -64,6 +66,5 @@
     </group>
   
     <!-- Launch actual pipeline -->
-    <include file="$(find kimera_vio_ros)/launch/kimera_vio_ros.launch"
-      pass_all_args="true"/>
+    <include file="$(find kimera_vio_ros)/launch/kimera_vio_ros.launch" pass_all_args="true"/>
   </launch>

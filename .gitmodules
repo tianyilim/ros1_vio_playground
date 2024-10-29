@@ -7,3 +7,6 @@
 [submodule "code/ORB_SLAM3"]
 	path = code/ORB_SLAM3
 	url = https://github.com/tianyilim/ORB_SLAM3
+[submodule "code/Kimera-VIO-ROS"]
+	path = code/Kimera-VIO-ROS
+	url = git@github.com:MIT-SPARK/Kimera-VIO-ROS.git

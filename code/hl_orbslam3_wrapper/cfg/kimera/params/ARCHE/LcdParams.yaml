@@ -11,7 +11,7 @@ max_intraisland_gap: 3
 max_nrFrames_between_islands: 3
 max_nrFrames_between_queries: 2
 
-refine_pose: 1
+refine_pose: 0
 
 lowe_ratio: 0.9
 matcher_type: 3

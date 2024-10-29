@@ -39,7 +39,13 @@ for capture in "${CAPTURES[@]}"; do
     
     roslaunch hydro-kimera-mono.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/HYDROMono/traj_pgo.csv /user/kimera-mono-"$capture".txt
+    python ../scripts/process_quats.py /user/kimera-mono-"$capture".txt /user/kimera-mono-"$capture".tum
     mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/HYDROMono/mem_usage.txt /user/kimera-mono-"$capture"_memUsageKB.txt
+    
+    roslaunch hydro-kimera-stereo.launch rosbag:="$ROSBAG_ROOT/$capture"
+    mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/HYDRO/traj_pgo.csv /user/kimera-stereo-"$capture".txt
+    python ../scripts/process_quats.py /user/kimera-stereo-"$capture".txt /user/kimera-stereo-"$capture".tum
+    mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/HYDRO/mem_usage.txt /user/kimera-stereo-"$capture"_memUsageKB.txt
 done
 
 # Run for ARCHE
@@ -71,6 +77,7 @@ for capture in "${CAPTURES[@]}"; do
 
     roslaunch arche-kimera-mono.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/ARCHE/traj_pgo.csv /user/kimera-mono-"$capture".txt
+    python ../scripts/process_quats.py /user/kimera-mono-"$capture".txt /user/kimera-mono-"$capture".tum
     mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/ARCHE/mem_usage.txt /user/kimera-mono-"$capture"_memUsageKB.txt
 done
 
@@ -105,9 +112,11 @@ for capture in "${CAPTURES[@]}"; do
 
     roslaunch hilti22-kimera-stereo.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/HILTI/traj_pgo.csv /user/kimera-stereo-"$capture".txt
+    python ../scripts/process_quats.py /user/kimera-stereo-"$capture".txt /user/kimera-stereo-"$capture".tum
     mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/HILTI/mem_usage.txt /user/kimera-stereo-"$capture"_memUsageKB.txt
     
     roslaunch hilti22-kimera-mono.launch rosbag:="$ROSBAG_ROOT/$capture"
     mv /catkin_ws/src/Kimera-VIO-ROS/output_logs/HILTIMono/traj_pgo.csv /user/kimera-mono-"$capture".txt
+    python ../scripts/process_quats.py /user/kimera-mono-"$capture".txt /user/kimera-mono-"$capture".tum
     mv /catkin_ws/src/hl_orbslam3_wrapper/cfg/kimera/params/HILTIMono/mem_usage.txt /user/kimera-mono-"$capture"_memUsageKB.txt
 done

@@ -29,8 +29,8 @@ fast_threshold: 20
 betweenRotationPrecision: 10000 # 1/(0.01*0.01)
 betweenTranslationPrecision: 100 # 1/(0.1*0.1)
 
-odom_rot_threshold: 0.005
-odom_trans_threshold: 0.05
+odom_rot_threshold: 0.001
+odom_trans_threshold: 0.001
 pcm_rot_threshold: -1
 pcm_trans_threshold: -1
 gnc_alpha: 0.7
@@ -60,7 +60,8 @@ ransac_use_2point_2d2d: 0
 # pose_recovery_type options:
 #   0: 3d3d (Arun)
 #   1: PnP (opengv)
-pose_recovery_type: 1
+#   2: k5ptRotOnly
+pose_recovery_type: 2
 ransac_max_iterations: 500
 ransac_probability: 0.995
 ransac_randomize: 0
@@ -70,5 +71,5 @@ optimize_3d3d_pose_from_inliers: 0
 optimize_2d3d_pose_from_inliers: 0
 
 # 2D-2D pose estimation method
-ransac_2d2d_algorithm: 1 # NISTER
+ransac_2d2d_algorithm: 0 # Stewenius
 ransac_2d3d_algorithm: 3 # EPNP

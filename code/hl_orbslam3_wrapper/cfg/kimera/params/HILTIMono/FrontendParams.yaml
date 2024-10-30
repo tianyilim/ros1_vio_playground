@@ -63,7 +63,7 @@ ransac_probability: 0.995
 ransac_randomize: 0
 min_intra_keyframe_time: 0.2
 max_intra_keyframe_time: 5.0
-max_disparity_since_lkf: 1000 #large value to disable
+max_disparity_since_lkf: 100 #large value to disable
 minNumberFeatures: 0
 useStereoTracking: 0
 disparityThreshold: 0.5
@@ -78,12 +78,12 @@ use_2d2d_tracking: 1
 optimize_2d2d_pose_from_inliers: 0
 
 # 3D-3D pose estimation
-use_3d3d_tracking: 1
+use_3d3d_tracking: 0
 optimize_3d3d_pose_from_inliers: 0
 
 # 2D-3D pose estimation method
 use_pnp_tracking: 0
 pnp_algorithm: 3 # EPNP
-min_pnp_inliers: 20
+min_pnp_inliers: 10
 ransac_threshold_pnp: 1.0 # pixels
 optimize_2d3d_pose_from_inliers: 0

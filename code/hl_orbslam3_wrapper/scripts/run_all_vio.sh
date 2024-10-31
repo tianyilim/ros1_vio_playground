@@ -92,12 +92,12 @@ for capture in "${CAPTURES[@]}"; do
     echo "Processing capture: $capture"
 
     roslaunch hilti22-orbslam-mono.launch viz:=False
-    mv /user/orbslam3_traj.tum /user/orbslam3-mono-"$capture".tum
+    mv /user/orbslam3_traj.tum /user/orbslam3-mono-"$capture".tum rosbag_path:="$ROSBAG_ROOT/$capture"
     mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-mono-"$capture"_memUsageKB.txt
     mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-mono-"$capture"_timing.txt
 
     roslaunch hilti22-orbslam-stereo.launch viz:=False
-    mv /user/orbslam3_traj.tum /user/orbslam3-stereo-"$capture".tum
+    mv /user/orbslam3_traj.tum /user/orbslam3-stereo-"$capture".tum rosbag_path:="$ROSBAG_ROOT/$capture"
     mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-stereo-"$capture"_memUsageKB.txt
     mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-stereo-"$capture"_timing.txt
 

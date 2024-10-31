@@ -91,15 +91,15 @@ CAPTURES=(
 for capture in "${CAPTURES[@]}"; do
     echo "Processing capture: $capture"
 
-    roslaunch hilti22-orbslam-mono.launch viz:=False rosbag_path:="$ROSBAG_ROOT/$capture"
-    mv /user/orbslam3_traj.tum /user/orbslam3-mono-"$capture".tum
-    mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-mono-"$capture"_memUsageKB.txt
-    mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-mono-"$capture"_timing.txt
+    # roslaunch hilti22-orbslam-mono.launch viz:=False rosbag_path:="$ROSBAG_ROOT/$capture"
+    # mv /user/orbslam3_traj.tum /user/orbslam3-mono-"$capture".tum
+    # mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-mono-"$capture"_memUsageKB.txt
+    # mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-mono-"$capture"_timing.txt
 
-    roslaunch hilti22-orbslam-stereo.launch viz:=False rosbag_path:="$ROSBAG_ROOT/$capture"
-    mv /user/orbslam3_traj.tum /user/orbslam3-stereo-"$capture".tum
-    mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-stereo-"$capture"_memUsageKB.txt
-    mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-stereo-"$capture"_timing.txt
+    # roslaunch hilti22-orbslam-stereo.launch viz:=False rosbag_path:="$ROSBAG_ROOT/$capture"
+    # mv /user/orbslam3_traj.tum /user/orbslam3-stereo-"$capture".tum
+    # mv ~/.ros/KeyframeMemUsageKB.txt /user/orbslam3-stereo-"$capture"_memUsageKB.txt
+    # mv ~/.ros/KeyframeTrackTiming.txt /user/orbslam3-stereo-"$capture"_timing.txt
 
     roslaunch hilti22-vins-mono.launch viz:=False rosbag_path:="$ROSBAG_ROOT/$capture"
     mv /user/vins-mono/output/vio.csv /user/vins-mono-"$capture".tum

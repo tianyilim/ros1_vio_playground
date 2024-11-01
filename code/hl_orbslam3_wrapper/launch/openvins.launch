@@ -6,8 +6,6 @@
         default="$(find hl_orbslam3_wrapper)/cfg/openvins/$(arg config).yaml" />
 
     <!-- mono or stereo and what ros bag to play -->
-    <arg name="max_cameras" default="2" />
-    <arg name="use_stereo" default="true" />
     <arg name="bag_start" default="0" />
     <arg name="bag_duration" default="-1" />
     <arg name="bag" />
@@ -34,10 +32,6 @@
         <!-- master configuration object -->
         <param name="verbosity" type="str" value="$(arg verbosity)" />
         <param name="config_path" type="str" value="$(arg config_path)" />
-
-        <!-- world/filter parameters -->
-        <param name="use_stereo" type="bool" value="$(arg use_stereo)" />
-        <param name="max_cameras" type="int" value="$(arg max_cameras)" />
 
         <!-- timing statistics recording -->
         <param name="record_timing_information" type="bool" value="$(arg dotime)" />

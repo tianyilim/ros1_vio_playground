@@ -1,0 +1,34 @@
+{
+  "autopep8.args": [
+    "--aggressive",
+    "--aggressive",
+    "--max-line-length",
+    "120"
+  ],
+  "editor.formatOnSave": true,
+  "editor.rulers": [
+    120
+  ],
+  "editor.trimAutoWhitespace": true,
+  "editor.renderWhitespace": "trailing",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoFormatStrings": true,
+  "python.analysis.stubPath": "typings",
+  "notebook.formatOnSave.enabled": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always"
+    }
+  },
+  "isort.importStrategy": "fromEnvironment",
+  "terminal.integrated.shellIntegration.history": 5000,
+  "terminal.integrated.allowChords": false,
+  "python.REPL.enableREPLSmartSend": false,
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/external_libs/AnyLoc/demo",
+    "${workspaceFolder}/external_libs/mast3r",
+    "${workspaceFolder}/external_libs/mast3r/dust3r",
+  ]
+}

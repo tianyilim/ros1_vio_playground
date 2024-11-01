@@ -39,7 +39,7 @@ body_T_cam1: !!opencv-matrix
 
 
 #Multiple thread support
-multiple_thread: 1  # disable to log timing
+multiple_thread: 0  # disable to log timing
 
 #feature tracker parameters
 max_cnt: 1000           # max feature number in feature tracking
@@ -59,7 +59,7 @@ acc_n: 0.001602090212250569     # accelerometer measurement noise standard devia
 gyr_n: 0.00013361278165885748   # gyroscope measurement noise standard deviation.     
 acc_w: 1.4361954439703917e-05   # accelerometer bias random walk noise standard deviation.  
 gyr_w: 3.1760920521174444e-06   # gyroscope bias random walk noise standard deviation.     
-g_norm: 9.81007                 # gravity magnitude
+g_norm: 9.81                    # gravity magnitude
 
 #unsynchronization parameters
 estimate_td: 0            # online estimate time offset between camera and imu

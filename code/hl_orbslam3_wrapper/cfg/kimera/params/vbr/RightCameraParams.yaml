@@ -1,0 +1,20 @@
+%YAML:1.0
+# General sensor definitions.
+camera_id: right_cam
+
+# Sensor extrinsics wrt. the body-frame.
+T_BS:
+  cols: 4
+  rows: 4
+  data: [ 0.047533765306, 0.002997724519, 0.998865133441, 0.117518620394,
+          -0.998851236543, -0.005926227938, 0.047550889366, -0.235758955147,
+           0.006062046927, -0.999977946492, 0.002712584915, -0.066699484195,
+           0.000000000000, 0.000000000000, 0.000000000000, 1.000000000000]
+
+# Camera specific definitions.
+rate_hz: 30
+resolution: [1388, 700]
+camera_model: pinhole
+intrinsics: [1270.980680475146, 1266.6167801504557, 692.2080529147544, 346.53773474480096] #fu, fv, cu, cv
+distortion_model: radial-tangential
+distortion_coefficients: [-0.13964919973164264, 0.3032246444678759, -0.0006841993380782645, -0.0017521213083201822]

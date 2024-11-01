@@ -9,6 +9,7 @@
     <arg name="max_cameras" default="2" />
     <arg name="use_stereo" default="true" />
     <arg name="bag_start" default="0" />
+    <arg name="bag_duration" default="-1" />
     <arg name="bag" />
 
     <!-- saving trajectory path and timing information -->
@@ -28,7 +29,7 @@
         <!-- bag parameters -->
         <param name="path_bag" type="str" value="$(arg bag)" />
         <param name="bag_start" type="double" value="$(arg bag_start)" />
-        <param name="bag_durr" type="int" value="-1" />
+        <param name="bag_durr" type="int" value="$(arg bag_duration)" />
 
         <!-- master configuration object -->
         <param name="verbosity" type="str" value="$(arg verbosity)" />

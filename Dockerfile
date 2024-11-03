@@ -70,10 +70,6 @@ ENV LANG en_US.UTF-8
 # Setup catkin ws
 RUN mkdir -p /catkin_ws/src /catkin_ws/build /catkin_ws/devel /catkin_ws/install
 
-# Setup OpenVINS (not used in this project, just for reference)
-WORKDIR /catkin_ws/src
-RUN git clone https://github.com/rpng/open_vins/
-
 # TUI helpers and config files
 COPY docker_build_utils/bashrc /root/.bashrc
 COPY docker_build_utils/tmux.conf /root/.tmux.conf

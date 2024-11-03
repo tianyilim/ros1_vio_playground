@@ -27,6 +27,7 @@ docker run --interactive --tty \
     --mount type=bind,source="$(pwd)/code/hl_orbslam3_wrapper",target=/catkin_ws/src/hl_orbslam3_wrapper \
     --mount type=bind,source="$(pwd)/code/orb_slam3_ros_wrapper",target=/catkin_ws/src/orb_slam3_ros_wrapper \
     --mount type=bind,source="$(pwd)/code/VINS-Fusion",target=/catkin_ws/src/VINS-Fusion \
+    --mount type=bind,source="$(pwd)/code/open_vins",target=/catkin_ws/src/open_vins \
     --mount type=bind,source="$(pwd)/code/ORB_SLAM3",target=/ORB_SLAM3 \
     --mount type=bind,source="$(pwd)/user",target=/user \
     --mount type=bind,source="/mnt/ssd_2T",target=/mnt/ssd_2T \

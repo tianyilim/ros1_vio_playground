@@ -10,3 +10,6 @@
 [submodule "code/Kimera-VIO-ROS"]
 	path = code/Kimera-VIO-ROS
 	url = git@github.com:MIT-SPARK/Kimera-VIO-ROS.git
+[submodule "code/open_vins"]
+	path = code/open_vins
+	url = git@github.com:tianyilim/open_vins.git

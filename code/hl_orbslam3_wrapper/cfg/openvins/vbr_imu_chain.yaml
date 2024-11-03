@@ -24,7 +24,7 @@ imu0:
   gyroscope_random_walk: 3.1760920521174444e-05      # [ rad / s^2 / sqrt(Hz) ] ( gyro bias diffusion )
 
   rostopic: /imu/data
-  time_offset: 0.0014439866415333613
+  time_offset: 0.0
 
   update_rate: 100.0
   # three different modes supported:

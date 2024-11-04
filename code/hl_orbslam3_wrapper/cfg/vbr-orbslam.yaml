@@ -47,8 +47,15 @@ Camera.fps: 30
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1 # images are grayscale it doesn't matter
 
+# Overlapping area between images
+Camera1.overlappingBegin: 100
+Camera1.overlappingEnd: 693
+
+Camera2.overlappingBegin: 0
+Camera2.overlappingEnd: 593
+
 # Close/Far threshold. Baseline times.
-Stereo.ThDepth: 60.0
+Stereo.ThDepth: 40.0
 # Transformation from camRight to camLeft
 Stereo.T_c1_c2: !!opencv-matrix
   rows: 4

@@ -29,4 +29,5 @@ install(DIRECTORY viz/
 catkin_install_python(PROGRAMS
     nodes/imu_downsampling_node.py
     nodes/dummy_imu_pub_node.py
+    nodes/write_pose_to_file.py
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

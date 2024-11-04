@@ -56,20 +56,20 @@ class OdometryToTUM:
 
 def main(args):
 
-    o = OdometryToTUM(args.topic, args.output_file)
+    o = OdometryToTUM(args.topic, args.out_file)
 
     # Keep the node running
     while not rospy.is_shutdown():
         rospy.spin()
 
-    rospy.loginfo(f"Wrote {o.num_poses_written} poses to '{args.output_file}'")
+    rospy.loginfo(f"Wrote {o.num_poses_written} poses to '{args.out_file}'")
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="ROS node to save odometry data in TUM format")
-    parser.add_argument('topic', type=str, help="ROS Odometry topic to subscribe to (e.g., /odom)")
-    parser.add_argument('output_file', type=Path, help="Path to the output file to save the TUM format data")
-    args = parser.parse_args()
+    parser.add_argument('--topic', type=str, help="ROS Odometry topic to subscribe to (e.g., /odom)")
+    parser.add_argument('--out_file', type=Path, help="Path to the output file to save the TUM format data")
+    args, _ = parser.parse_known_args()
 
     try:
         main(args)

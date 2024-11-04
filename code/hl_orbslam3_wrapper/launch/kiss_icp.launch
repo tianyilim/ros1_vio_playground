@@ -5,7 +5,7 @@
     <!-- Except that Rosbag player is 'required' such that the entire launchfile dies (scriptable) -->
 
     <!-- ROS paramaters -->
-    <arg name="bagfile" default="" />
+    <arg name="bagfile" />
     <arg name="visualize" default="true" />
     <arg name="odom_frame" default="odom" />
     <arg name="base_frame" default="" />
@@ -18,6 +18,9 @@
     <arg name="max_range" default="100.0" />
     <arg name="min_range" default="5.0" />
     <arg name="voxel_size" default="" />
+
+    <!-- Always use sim time -->
+    <param name="use_sim_time" value="true" />
 
     <!-- Odometry node -->
     <node pkg="kiss_icp" type="odometry_node" name="odometry_node" output="screen">
@@ -38,14 +41,13 @@
     </node>
 
     <!-- Rosbag player, if bagfile argument was specified -->
-    <group if="$(eval bagfile != '')">
-        <node pkg="rosbag" type="play" name="player" args="$(arg bagfile)" output="screen"
-            required="True" />
-    </group>
+    <node pkg="rosbag" type="play" name="player"
+        args="--clock --topics /ouster/points --bags $(arg bagfile)" output="screen"
+        required="True" />
 
     <!-- Simple script that subscribes to a ROS node and writes the current pose to a file -->
     <node pkg="hl_orbslam3_wrapper" type="write_pose_to_file.py" name="pose_writer" required="True"
-        args="/kiss/odometry $(arg pose_out_file)" />
+        args="--topic /kiss/odometry --out_file $(arg pose_out_file)" />
 
     <!-- Visualizer -->
     <group if="$(arg visualize)">

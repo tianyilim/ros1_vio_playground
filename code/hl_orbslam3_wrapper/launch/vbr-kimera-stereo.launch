@@ -1,7 +1,7 @@
 <launch>
   <arg name="dataset_name" default="vbr" />
   <arg name="verbosity" default="0" />
-  <arg name="do_coarse_temporal_sync" default="false" />
+  <arg name="do_coarse_temporal_sync" default="true" />
   <arg name="do_fine_temporal_sync" default="false" />
 
   <!-- Set online to true if you use rosbag play or sensor stream -->
@@ -17,7 +17,7 @@
   <arg name="log_gt_data" default="false" />
   <arg name="gt_topic" default="" />
 
-  <arg name="use_lcd" default="true" />
+  <arg name="use_lcd" default="false" />
   <arg name="use_external_odom" default="false" />
   <arg name="visualize" default="true" />
   <!-- Type of visualization: 0: 2d3d_mesh, 1: pointcloud, 2: none -->

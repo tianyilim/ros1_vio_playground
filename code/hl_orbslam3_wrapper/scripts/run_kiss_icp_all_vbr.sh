@@ -22,20 +22,25 @@ for ENV in "${ENVIRONMENTS[@]}"; do
     for SUBFOLDER in $(ls $BASE_PATH/$ENV); do
         echo "Iterating through $ENV/$SUBFOLDER"
 
-        # # Add all rosbags of interest to a space separated string
-        # rosbags_of_interest=$(ls "$BASE_PATH/$ENV/$SUBFOLDER/$SUBFOLDER"_*.bag)
-        # # This is needed because ls delimiter is a newline
-        # rosbags_of_interest=$(echo $rosbags_of_interest | tr '\n' ' ')
+        if [[ $SUBFOLDER == *train* ]]; then
+            echo "Skipping train folder $SUBFOLDER for now."
+            continue
+        fi
 
-        # out_file="$BASE_PATH/$ENV/$SUBFOLDER/$SUBFOLDER"_kiss_icp.txt
+        # Add all rosbags of interest to a space separated string
+        rosbags_of_interest=$(ls "$BASE_PATH/$ENV/$SUBFOLDER/$SUBFOLDER"_*.bag)
+        # This is needed because ls delimiter is a newline
+        rosbags_of_interest=$(echo $rosbags_of_interest | tr '\n' ' ')
 
-        # echo Writing to "$out_file"
-        # echo $rosbags_of_interest
+        out_file="$BASE_PATH/$ENV/$SUBFOLDER/$SUBFOLDER"_kiss_icp.txt
 
-        # roslaunch hl_orbslam3_wrapper kiss_icp.launch \
-        #     bagfile:="$rosbags_of_interest" \
-        #     topic:=/ouster/points \
-        #     visualize:=False \
-        #     pose_out_file:="$out_file"
+        echo Writing to "$out_file"
+        echo $rosbags_of_interest
+
+        roslaunch hl_orbslam3_wrapper kiss_icp.launch \
+            bagfile:="$rosbags_of_interest" \
+            topic:=/ouster/points \
+            visualize:=False \
+            pose_out_file:="$out_file"
     done
 done

@@ -3,7 +3,7 @@ This scripts combines the multiple smaller rosbags in the VBR dataset into a sin
 """
 
 from pathlib import Path
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 import cv2
 import natsort
@@ -114,9 +114,11 @@ def _create_odometry_msg(pq: TransformPQ, sensor_frame_id: str, header: Header) 
     return msg
 
 
-def combine_rosbag(inbags, outbag, odom_file):
+def combine_rosbag(inbags, outbag, odom_file: Optional[Path] = None):
     bridge = CvBridge()
-    tm, odom_times = read_odom_file(odom_file)
+
+    if odom_file is not None:
+        tm, odom_times = read_odom_file(odom_file)
 
     outbag = rosbag.Bag(outbag, "w")
     print(f"Merging {len(inbags)} input rosbags...")
@@ -153,7 +155,7 @@ def combine_rosbag(inbags, outbag, odom_file):
                     msg = mono8_msg
 
                 # Synchronize odom to image topic
-                if topic == CAM_TO_SYNC_TO:
+                if odom_file is not None and topic == CAM_TO_SYNC_TO:
                     img_time = msg.header.stamp.to_sec()
                     if img_time <= odom_times[-1] and img_time >= odom_times[0]:
                         transform = tm.get_transform_at_time("rig", "world", img_time)
@@ -168,12 +170,13 @@ def combine_rosbag(inbags, outbag, odom_file):
 if __name__ == "__main__":
 
     BASE_PATH = Path("/mnt/ssd_4T/tianyi_data/vbr/vbr_slam")
-    ENVIRONMENTS = ["campus",
-                    "ciampino",
-                    "colosseo",
-                    "diag",
-                    "pincio",
-                    "spagna"]
+    ENVIRONMENTS = [
+        "campus",
+        "ciampino",
+        "colosseo",
+        "diag",
+        "pincio",
+        "spagna"]
 
     for env in ENVIRONMENTS:
         for subfolder in (BASE_PATH / env).iterdir():

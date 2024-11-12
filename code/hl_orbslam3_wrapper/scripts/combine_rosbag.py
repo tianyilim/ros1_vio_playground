@@ -1,8 +1,11 @@
+from pathlib import Path
+
+import cv2
+import natsort
 import rosbag
-from tqdm import tqdm
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
-import cv2
+from tqdm import tqdm
 
 
 def combine_rosbag(inbags, outbag):
@@ -30,10 +33,10 @@ def combine_rosbag(inbags, outbag):
                         cv_image_bayer = bridge.imgmsg_to_cv2(msg, desired_encoding="bayer_rggb8")
                         # print(cv_image_bayer.dtype, cv_image_bayer.shape)
                         # Convert Bayer image to grayscale (mono8)
-                        cv_image_mono8 = cv2.cvtColor(cv_image_bayer, cv2.COLOR_BAYER_RG2GRAY)
+                        cv_image_mono8 = cv2.cvtColor(cv_image_bayer, cv2.COLOR_BAYER_RG2RGB)
                         # print(cv_image_mono8.dtype, cv_image_mono8.shape)
                         # print('--' * 40)
-                        mono8_msg: Image = bridge.cv2_to_imgmsg(cv_image_mono8, encoding="mono8")
+                        mono8_msg: Image = bridge.cv2_to_imgmsg(cv_image_mono8, encoding="rgb8")
                     except CvBridgeError as e:
                         print(e)
                         continue
@@ -43,52 +46,34 @@ def combine_rosbag(inbags, outbag):
 
                 outbag.write(topic, msg, t)
 
-# outbag = "/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/diag/diag_train0/diag_train0.bag"
-# inbags = [
-#     f"/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/diag/diag_train0/diag_train0_{i:02d}.bag" for i in range(14)
-# ]
-# combine_rosbag(inbags, outbag)
-
-# outbag = "/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/pincio/pincio_train0/pincio_train0.bag"
-# inbags = [
-#     f"/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/pincio/pincio_train0/pincio_train0_{i:02d}.bag" for i in range(18)
-# ]
-# combine_rosbag(inbags, outbag)
-
-# outbag = "/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/ciampino/ciampino_train0/ciampino_train0.bag"
-# inbags = [
-#     f"/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/ciampino/ciampino_train0/ciampino_train0_{i:02d}.bag" for i in range(12)
-# ]
-# combine_rosbag(inbags, outbag)
-
-# outbag = "/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/ciampino/ciampino_train1/ciampino_train1.bag"
-# inbags = [
-#     f"/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/ciampino/ciampino_train1/ciampino_train1_{i:02d}.bag" for i in range(7)
-# ]
-# combine_rosbag(inbags, outbag)
-
-# outbag = "/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/campus/campus_train0/campus_train0.bag"
-# inbags = [
-#     f"/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/campus/campus_train0/campus_train0_{i:02d}.bag" for i in range(5)
-# ]
-# combine_rosbag(inbags, outbag)
-
-# outbag = "/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/campus/campus_train1/campus_train1.bag"
-# inbags = [
-#     f"/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/campus/campus_train1/campus_train1_{i:02d}.bag" for i in range(5)
-# ]
-# combine_rosbag(inbags, outbag)
-
-# outbag = "/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/colosseo/colosseo_train0/colosseo_train0.bag"
-# inbags = [
-#     f"/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/colosseo/colosseo_train0/colosseo_train0_{i:02d}.bag" for i in range(12)
-# ]
-# combine_rosbag(inbags, outbag)
-
 
 if __name__ == "__main__":
-    outbag = "/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/spagna/spagna_train0/spagna_train00-17.bag"
-    inbags = [
-        f"/mnt/ssd_4T/tianyi_data/vbr/vbr_slam/spagna/spagna_train0/spagna_train0_{i:02d}.bag" for i in range(18)
-    ]
-    combine_rosbag(inbags, outbag)
+
+    BASE_PATH = Path("/mnt/ssd_4T/tianyi_data/vbr/vbr_slam")
+    ENVIRONMENTS = ["campus",
+                    "ciampino",
+                    "colosseo",
+                    "diag",
+                    "pincio",
+                    "spagna"]
+
+    for env in ENVIRONMENTS:
+        for subfolder in (BASE_PATH / env).iterdir():
+
+            if "train" in subfolder.name:
+                # print(f"Skipping subfolder {subfolder.name} with 'train' data")
+                continue
+
+            # All files in subfolder that end in .bag
+            print(subfolder)
+            bag_files = list(subfolder.glob("*.bag"))
+            bag_files = natsort.natsorted(bag_files)
+            print(bag_files)
+
+            outbag = subfolder / f"{subfolder.name}.bag"
+            inbags = [str(bag_file) for bag_file in bag_files]
+            combine_rosbag(inbags, outbag)
+
+            print('+========+' * 10)
+
+    exit(0)

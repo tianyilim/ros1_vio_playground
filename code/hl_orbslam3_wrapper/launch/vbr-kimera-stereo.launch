@@ -17,8 +17,8 @@
   <arg name="log_gt_data" default="false" />
   <arg name="gt_topic" default="" />
 
-  <arg name="use_lcd" default="false" />
-  <arg name="use_external_odom" default="false" />
+  <arg name="use_lcd" default="true" />
+  <arg name="use_external_odom" default="true" />
   <arg name="visualize" default="true" />
   <!-- Type of visualization: 0: 2d3d_mesh, 1: pointcloud, 2: none -->
   <arg name="viz_type" default="2" />
@@ -34,7 +34,7 @@
   <arg name="left_cam_topic" default="/camera_left/image_raw" />
   <arg name="right_cam_topic" default="/camera_right/image_raw" />
   <arg name="imu_topic" default="/imu/data" />
-  <arg name="external_odom_topic" default="" />
+  <arg name="external_odom_topic" default="/odometry" />
 
   <!-- Configuration Folder -->
   <arg name="params_folder"

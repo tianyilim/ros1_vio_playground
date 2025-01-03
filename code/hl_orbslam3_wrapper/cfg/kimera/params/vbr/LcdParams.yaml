@@ -26,6 +26,8 @@ score_type_id: 0
 patch_sze: 31
 fast_threshold: 20
 
+# Relative accuracy for odometry backbone
+# Matters for PCM (not currently used)
 betweenRotationPrecision: 10000 # 1/(0.01*0.01)
 betweenTranslationPrecision: 100 # 1/(0.1*0.1)
 
@@ -33,7 +35,7 @@ odom_rot_threshold: 0.005
 odom_trans_threshold: 0.05
 pcm_rot_threshold: -1
 pcm_trans_threshold: -1
-gnc_alpha: 0.7
+gnc_alpha: 0.7  # Set in between 0 and 1 to enable
 
 max_lc_cached_before_optimize: 10
 

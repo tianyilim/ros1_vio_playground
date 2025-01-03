@@ -1,0 +1,24 @@
+%YAML:1.0
+# Type of odometry sensor:
+
+# Sensor extrinsics wrt. the body-frame.
+T_BS:
+  cols: 4
+  rows: 4
+  data: [0.999465411052, -0.032002615562, 0.006703008845, 0.049432894905,
+         0.031941646710, 0.999449105164, 0.009017001139, 0.014787790367,
+        -0.006987899326, -0.008798126340, 0.999936906049, 0.607988712245,
+         0.000000000000, 0.000000000000, 0.000000000000, 1.000000000000]
+rate_hz: 30
+
+# odometry sensor noise model parameters (static)
+# ! Turn these values way up to bias towards external odom
+# ! No way to turn off VIO as yet
+odomPositionPrecision: 1000
+odomRotationPrecision: 10000
+# ! 0.0 means that the velocity is turned off
+odomVelPrecision: 0.0
+# odomVelPrecision: 1.0e-2
+
+# Extra parameters
+odomTimeShift: 0.0

@@ -1,8 +1,17 @@
 <launch>
   <arg name="dataset_name" default="vbr" />
   <arg name="verbosity" default="0" />
-  <arg name="do_coarse_temporal_sync" default="true" />
+  <arg name="do_coarse_temporal_sync" default="false" />
   <arg name="do_fine_temporal_sync" default="false" />
+
+  <!-- Rosbag player, if bagfile argument was specified -->
+  <arg name="bagfile" default="" />
+  <arg name="bag_rate" default="0.5" />
+  <group if="$(eval arg('bagfile') != '')">
+    <node pkg="rosbag" type="play" name="player"
+      args="--clock --bags $(arg bagfile) -r $(arg bag_rate) -d 10 --quiet" output="screen"
+      required="True" />
+  </group>
 
   <!-- Set online to true if you use rosbag play or sensor stream -->
   <arg name="online" default="true" />
@@ -16,6 +25,9 @@
   <!-- Set to true and specify gt_topic if you want to log ground-truth data -->
   <arg name="log_gt_data" default="false" />
   <arg name="gt_topic" default="" />
+
+  <rosparam param="gt_gyro_bias"> [0.0, 0.0, 0.0] </rosparam>
+  <rosparam param="gt_accel_bias"> [0.0, 0.0, 0.0] </rosparam>
 
   <arg name="use_lcd" default="true" />
   <arg name="use_external_odom" default="true" />

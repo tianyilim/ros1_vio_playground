@@ -50,7 +50,9 @@ run_kimera_on_seqs() {
                 bagfile:="$rosbag_path"
 
             # Copy output to a relevant location
-            cp -r /catkin_ws/src/Kimera-VIO-ROS/output_logs/vbr /catkin_ws/src/Kimera-VIO-ROS/output_logs/vbr_"$subfolder_name"
+            rm -rf /catkin_ws/src/Kimera-VIO-ROS/output_logs/vbr_"$subfolder_name"
+            mkdir -p /catkin_ws/src/Kimera-VIO-ROS/output_logs/vbr_"$subfolder_name"
+            cp -r /catkin_ws/src/Kimera-VIO-ROS/output_logs/vbr/* /catkin_ws/src/Kimera-VIO-ROS/output_logs/vbr_"$subfolder_name"
         done
     done
 }

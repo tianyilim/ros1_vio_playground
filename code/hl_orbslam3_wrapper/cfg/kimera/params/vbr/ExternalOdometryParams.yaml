@@ -2,7 +2,6 @@
 # Type of odometry sensor:
 
 # Sensor extrinsics wrt. the body-frame.
-# * Double check that the odometry frequency is correct.
 T_BS:
   cols: 4
   rows: 4
@@ -15,8 +14,8 @@ rate_hz: 20
 # odometry sensor noise model parameters (static)
 # ! Turn these values way up to bias towards external odom
 # ! No way to turn off VIO as yet
-odomPositionPrecision: 1000
-odomRotationPrecision: 10000
+odomPositionPrecision: 1000000000
+odomRotationPrecision: 10000000000
 # ! 0.0 means that the velocity is turned off
 odomVelPrecision: 0.0
 # odomVelPrecision: 1.0e-2

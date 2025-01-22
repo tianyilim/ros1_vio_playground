@@ -1,0 +1,16 @@
+<launch>
+    <arg name="rosbag_path" />
+    <arg name="config_path" />
+
+    <node name="vins_node" pkg="vins" type="vins_node" output="screen" args="$(arg config_path)"
+        required="True" />
+
+    <node name="lc_node" pkg="loop_fusion" type="loop_fusion_node" output="screen"
+        args="$(arg config_path)" required="True" />
+
+    <!-- Play rosbag -->
+    <group if="$(eval arg('rosbag_path') != '')">
+        <node pkg="rosbag" type="play" name="rosbag_player"
+            args="--clock $(arg rosbag_path) --delay 1 -r 0.8" required="True" />
+    </group>
+</launch>

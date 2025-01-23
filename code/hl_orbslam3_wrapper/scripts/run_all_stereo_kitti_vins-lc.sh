@@ -13,7 +13,7 @@ function move_vins_outputs() {
 
     cp $VINS_OUTPUT_PATH/* "$OUTPUT_PATH"
     cp ~/.ros/pose_graph.txt "$OUTPUT_PATH"
-    # sudo mv /tmp/VINS_KeyframeTrackTiming.txt /user/vins-stereo_"$traj_name"_KeyframeTrackTiming.txt
+    mv /tmp/VINS_KeyframeTrackTiming.txt "$OUTPUT_PATH"/"$traj_name"_KeyframeTrackTiming.txt
 }
 
 function run_vins() {

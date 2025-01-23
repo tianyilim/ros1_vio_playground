@@ -8,7 +8,7 @@ num_of_cam: 2
 imu_topic: "/imu/data"
 image0_topic: "/camera_left/image_raw"
 image1_topic: "/camera_right/image_raw"
-output_path: "/user/vins-stereo/output/"
+output_path: "/home/tony-ws1/output"
 
 cam0_calib: "vbr-cam-left.yaml"
 cam1_calib: "vbr-cam-right.yaml"

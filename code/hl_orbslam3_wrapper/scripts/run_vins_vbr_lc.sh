@@ -28,7 +28,7 @@ for ENV in "${ENVIRONMENTS[@]}"; do
         OUTPUT=/user/vins-"$BAG_NAME"
         mkdir -p "$OUTPUT"
 
-        roslaunch hl_orbslam3_wrapper vbr-vins-stereo-lc.launch rosbag_path:="$ROSBAG_PATH" config_path:="$CONFIG_PATH"
+        /usr/bin/time -o $OUTPUT/timing.txt roslaunch hl_orbslam3_wrapper vbr-vins-stereo-lc.launch rosbag_path:="$ROSBAG_PATH" config_path:="$CONFIG_PATH"
 
         mv "$VINS_OUTPUT_PATH"/* "$OUTPUT"
         mv ~/.ros/VINS_KeyframeMemUsageKB.txt "$OUTPUT"

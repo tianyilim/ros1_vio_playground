@@ -2,7 +2,8 @@
     <arg name="seq_path" />
     <arg name="config_path" />
 
-    <node name="vins_node" pkg="vins" type="kitti_odom_test" output="screen" args="$(arg config_path) $(arg seq_path)"
+    <node name="vins_estimator" pkg="vins" type="kitti_odom_test" output="screen"
+        args="$(arg config_path) $(arg seq_path)"
         required="True" />
 
     <node name="lc_node" pkg="loop_fusion" type="loop_fusion_node" output="screen"

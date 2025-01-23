@@ -2,7 +2,8 @@
     <arg name="rosbag_path" />
     <arg name="config_path" />
 
-    <node name="vins_node" pkg="vins" type="vins_node" output="screen" args="$(arg config_path)"
+    <node name="vins_estimator" pkg="vins" type="vins_node" output="screen"
+        args="$(arg config_path)"
         required="True" />
 
     <node name="lc_node" pkg="loop_fusion" type="loop_fusion_node" output="screen"

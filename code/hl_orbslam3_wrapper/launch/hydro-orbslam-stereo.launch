@@ -1,5 +1,6 @@
 <launch>
-    <arg name="cam_topic" value="/spot/camera/frontleft/image" />
+    <arg name="left_cam_topic" value="/spot/camera/frontleft/image" />
+    <arg name="right_cam_topic" value="/spot/camera/frontright/image" />
     <arg name="imu_topic" value="/imu" />
 
     <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/hydro-orbslam.yaml" />
@@ -10,10 +11,11 @@
     <!-- Always use sim time -->
     <param name="use_sim_time" value="true" />
 
-    <node name="orb_slam3_mono_inertial" pkg="orb_slam3_ros_wrapper" required="True"
-        type="orb_slam3_ros_wrapper_mono_inertial" output="screen" ns="/">
+    <node name="orb_slam3_spot_stereo_imu" pkg="orb_slam3_ros_wrapper" required="True"
+        type="orb_slam3_ros_wrapper_stereo_inertial" output="screen" ns="/">
         <!-- Input topics -->
-        <remap from="/camera/image_raw" to="$(arg cam_topic)" />
+        <remap from="/camera/left/image_raw" to="$(arg left_cam_topic)" />
+        <remap from="/camera/right/image_raw" to="$(arg right_cam_topic)" />
         <remap from="/imu" to="$(arg imu_topic)" />
 
         <!-- Parameters for original ORB-SLAM3 -->

@@ -48,7 +48,7 @@ Camera.fps: 30  # may be 20fps for self driving
 Camera.RGB: 1 # images are grayscale it doesn't matter
 
 # Close/Far threshold. Baseline times.
-Stereo.ThDepth: 40.0
+Stereo.ThDepth: 150.0
 # Transformation from camRight to camLeft
 Stereo.T_c1_c2: !!opencv-matrix
   rows: 4
@@ -69,15 +69,15 @@ ORBextractor.nFeatures: 2000
 # ORB Extractor: Scale factor between levels in the scale pyramid
 ORBextractor.scaleFactor: 1.2
 
-# ORB Extractor: Number of levels in the scale pyramid
-ORBextractor.nLevels: 4
+# ORB Extractor: Number of levels in the scale pyramid  
+ORBextractor.nLevels: 8
 
 # ORB Extractor: Fast threshold
 # Image is divided in a grid. At each cell FAST are extracted imposing a minimum response.
 # Firstly we impose iniThFAST. If no corners are detected we impose a lower value minThFAST
 # You can lower these values if your images have low contrast
-ORBextractor.iniThFAST: 10
-ORBextractor.minThFAST: 5
+ORBextractor.iniThFAST: 20
+ORBextractor.minThFAST: 7
 
 #--------------------------------------------------------------------------------------------
 # Viewer Parameters

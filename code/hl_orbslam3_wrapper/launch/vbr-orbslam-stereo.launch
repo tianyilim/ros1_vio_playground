@@ -2,7 +2,7 @@
     <arg name="left_cam_topic" value="/camera_left/image_raw" />
     <arg name="right_cam_topic" value="/camera_right/image_raw" />
 
-    <arg name="settings_filepath" value="$(find hl_orbslam3_wrapper)/cfg/vbr-orbslam-stereo.yaml" />
+    <arg name="settings_filepath" default="$(find hl_orbslam3_wrapper)/cfg/vbr-orbslam-stereo.yaml" />
     <arg name="traj_save_file" default="/user/orbslam3_traj.tum" />
     <arg name="time_save_file" default="/user/orbslam3_time.txt" />
 

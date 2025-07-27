@@ -9,6 +9,4 @@
     <node name="lc_node" pkg="loop_fusion" type="loop_fusion_node" output="screen"
         args="$(arg config_path)" required="True" />
 
-    <!-- Play rosbag -->
-
 </launch>

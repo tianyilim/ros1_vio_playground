@@ -1,16 +1,25 @@
 #!/bin/bash
 
-# TODO This is the main runner script for all VINS VBR datasets.
-set -e
+# This is the main runner script for all VINS VBR datasets.
+# Specify IMU_ON and LC_ON flags
 
-# NOTE edit these as needed
-IMU_ON=false
-LC_ON=false
+# if less than 3 arguments, print usage and exit
+if [ "$#" -lt 2 ]; then
+    echo "Usage: $0 <IMU_ON> <LC_ON>"
+    echo "Example: $0 true false"
+    exit 1
+fi
+
+IMU_ON=$1
+LC_ON=$2
+
+set -e
 
 if [ "$LC_ON" = true ]; then
     echo "Loop Closure is ON"
     LAUNCHFILE="vbr-vins-stereo-lc.launch"
 else
+    LC_ON=false
     echo "Loop Closure is OFF"
     LAUNCHFILE="vbr-vins-stereo.launch"
 fi
@@ -19,6 +28,7 @@ if [ "$IMU_ON" = true ]; then
     echo "IMU is ON"
     CONFIG_PATH="/catkin_ws/src/hl_orbslam3_wrapper/cfg/vins-fusion/vbr-vins-stereo.yaml"
 else
+    IMU_ON=false
     echo "IMU is OFF"
     CONFIG_PATH="/catkin_ws/src/hl_orbslam3_wrapper/cfg/vins-fusion/vbr-vins-stereo-no-imu.yaml"
 fi
@@ -46,10 +56,10 @@ for ENV in "${ENVIRONMENTS[@]}"; do
     SUBFOLDER=${array[1]}
 
     ROSBAG_PATH=$BASE_PATH/$SCENE/$SUBFOLDER/$SUBFOLDER.bag
-    OUTPUT=/user/vins-"$SUBFOLDER"-"$LC_ON"-"$IMU_ON"
+    OUTPUT=/user/vins-"$SUBFOLDER"-LC_"$LC_ON"-IMU_"$IMU_ON"
+    mkdir -p "$OUTPUT"
 
     /usr/bin/time -o "$OUTPUT"/timing.txt roslaunch hl_orbslam3_wrapper "$LAUNCHFILE" rosbag_path:="$ROSBAG_PATH" config_path:="$CONFIG_PATH"
 
-    mkdir -p "$OUTPUT"
     mv "$VINS_OUTPUT_PATH"/* "$OUTPUT"
 done

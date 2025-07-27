@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# TODO: If container is already running, attach to it.
+# TODO: If container exists but is not running, attach to it.
+# TODO: If we specify a "rebuild" flag, rebuild the image.
+
 docker stop orbslam3 || true
 docker rm orbslam3 || true
 

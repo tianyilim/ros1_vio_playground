@@ -2,6 +2,9 @@
 
 set -e
 
+# If you want to enable LC, uncomment this line
+# export ORBSLAM3_LC_ON=1
+
 # Run KISS-ICP on all VBR datasets
 # Need to also save path to file
 

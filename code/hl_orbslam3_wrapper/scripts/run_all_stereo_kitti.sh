@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# If you want to enable LC, uncomment this line
+# export ORBSLAM3_LC_ON=1
+
 cd /ORB_SLAM3/Examples/Stereo
 
 function move_orbslam_outputs() {
